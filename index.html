@@ -1,760 +1,1033 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VenueConsultant.ca — Exclusive Wedding Venue Savings in Toronto</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --cream:      #F5EFE4;
-      --cream-mid:  #EDE3D0;
-      --cream-dark: #D9CCBA;
-      --brown:      #3B2A1A;
-      --brown-mid:  #5C3F28;
-      --brown-lt:   #7A5740;
-      --gold:       #B89A72;
-      --white:      #FDFAF5;
-      --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-sans:  'Jost', sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--cream);
-      color: var(--brown);
-      font-family: var(--font-sans);
-      font-weight: 300;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VenueConsultant.ca — Your Dream Venue, Negotiated For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--cream:#F5EFE4;--cream-mid:#EDE3D0;--cream-dark:#D9CCBA;--brown:#3B2A1A;--brown-mid:#5C3F28;--brown-lt:#7A5740;--gold:#B89A72;--white:#FDFAF5;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-weight:300;overflow-x:hidden;min-height:100vh}
+.page{display:none;min-height:100vh;flex-direction:column}
+.page.active{display:flex}
 
-    /* PAGES */
-    .page { display: none; min-height: 100vh; flex-direction: column; }
-    .page.active { display: flex; }
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.3rem 5vw;background:rgba(245,239,228,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-dark);transition:padding .3s}
+.nav-logo{font-family:var(--serif);font-size:1.25rem;font-weight:500;letter-spacing:.06em;color:var(--brown);cursor:pointer}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2.2rem;list-style:none;align-items:center}
+.nav-links button{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brown-mid);cursor:pointer;transition:color .2s;background:none;border:none;font-family:var(--sans);font-weight:400;padding:0}
+.nav-links button:hover,.nav-links button.active-link{color:var(--gold)}
+.nav-cta{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:.55rem 1.4rem;border:1px solid var(--brown);color:var(--brown);background:none;cursor:pointer;font-family:var(--sans);font-weight:400;transition:background .2s,color .2s}
+.nav-cta:hover{background:var(--brown);color:var(--cream)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--brown)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--cream);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mobile-menu.open{display:flex}
+.mobile-menu button{font-family:var(--serif);font-size:2rem;color:var(--brown);cursor:pointer;transition:color .2s;background:none;border:none}
+.mobile-menu button:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:1.5rem;right:5vw;font-size:1.8rem;color:var(--brown-mid);cursor:pointer;background:none;border:none;font-family:var(--serif)}
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.3rem 5vw;
-      background: rgba(245,239,228,0.94);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--cream-dark);
-      transition: padding .3s;
-    }
-    .nav-logo {
-      font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500;
-      letter-spacing: .06em; color: var(--brown); text-decoration: none; cursor: pointer;
-    }
-    .nav-logo span { color: var(--gold); }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
-    .nav-links a {
-      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--brown-mid); text-decoration: none; cursor: pointer;
-      transition: color .2s; background: none; border: none;
-      font-family: var(--font-sans); font-weight: 400; padding: 0;
-    }
-    .nav-links a:hover, .nav-links a.active-link { color: var(--gold); }
-    .nav-cta {
-      font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
-      padding: .55rem 1.4rem; border: 1px solid var(--brown);
-      color: var(--brown); background: none; cursor: pointer;
-      font-family: var(--font-sans); font-weight: 400;
-      transition: background .2s, color .2s;
-    }
-    .nav-cta:hover { background: var(--brown); color: var(--cream); }
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; background: none; border: none; padding: 4px;
-    }
-    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--brown); }
-    .mobile-menu {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--cream); z-index: 300; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2.5rem;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-family: var(--font-serif); font-size: 2rem; color: var(--brown);
-      text-decoration: none; cursor: pointer; transition: color .2s;
-    }
-    .mobile-menu a:hover { color: var(--gold); }
-    .mobile-close {
-      position: absolute; top: 1.5rem; right: 5vw; font-size: 1.8rem;
-      color: var(--brown-mid); cursor: pointer; background: none; border: none;
-      font-family: var(--font-serif);
-    }
+/* BUTTONS */
+.btn-dark{background:var(--brown);color:var(--cream);padding:.85rem 2.5rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);font-weight:400;transition:background .2s,transform .15s}
+.btn-dark:hover{background:var(--brown-mid);transform:translateY(-2px)}
+.btn-outline{border:1px solid var(--brown);color:var(--brown);background:none;padding:.85rem 2.5rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);font-weight:400;transition:background .2s,color .2s}
+.btn-outline:hover{background:var(--brown);color:var(--cream)}
+.btn-gold{background:var(--gold);color:var(--brown);padding:.85rem 2.2rem;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);font-weight:500;transition:opacity .2s}
+.btn-gold:hover{opacity:.85}
 
-    /* BUTTONS */
-    .btn-primary {
-      background: var(--brown); color: var(--cream);
-      padding: .85rem 2.5rem; font-size: .72rem; letter-spacing: .18em;
-      text-transform: uppercase; border: none; cursor: pointer;
-      font-family: var(--font-sans); font-weight: 400;
-      transition: background .2s, transform .15s; display: inline-block;
-    }
-    .btn-primary:hover { background: var(--brown-mid); transform: translateY(-2px); }
-    .btn-outline {
-      border: 1px solid var(--brown); color: var(--brown); background: none;
-      padding: .85rem 2.5rem; font-size: .72rem; letter-spacing: .18em;
-      text-transform: uppercase; cursor: pointer; font-family: var(--font-sans);
-      font-weight: 400; transition: background .2s, color .2s; display: inline-block;
-    }
-    .btn-outline:hover { background: var(--brown); color: var(--cream); }
-    .btn-gold {
-      background: var(--gold); color: var(--brown); padding: .85rem 2.2rem;
-      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
-      border: none; cursor: pointer; font-family: var(--font-sans); font-weight: 500;
-      transition: opacity .2s;
-    }
-    .btn-gold:hover { opacity: .85; }
+/* LABELS */
+.tag{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem}
+.heading{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.6rem);font-weight:300;line-height:1.12;color:var(--brown)}
+.heading em{font-style:italic;color:var(--gold)}
+.btext{font-size:.92rem;line-height:2;color:var(--brown-mid)}
 
-    /* SECTION LABELS */
-    .section-tag {
-      font-size: .65rem; letter-spacing: .32em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: .9rem;
-    }
-    .section-title {
-      font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3.6rem);
-      font-weight: 300; line-height: 1.12; color: var(--brown);
-    }
-    .section-title em { font-style: italic; color: var(--gold); }
-    .section-body { font-size: .92rem; line-height: 2; color: var(--brown-mid); }
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
 
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+/* FOOTER */
+.foot{background:var(--brown);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.foot-logo{font-family:var(--serif);font-size:1rem;color:var(--cream);cursor:pointer}
+.foot-logo span{color:var(--gold)}
+.foot-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap}
+.foot-links button{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,239,228,.45);cursor:pointer;transition:color .2s;background:none;border:none;font-family:var(--sans)}
+.foot-links button:hover{color:var(--gold)}
+.foot-copy{font-size:.68rem;color:rgba(245,239,228,.28)}
 
-    /* HOME PAGE */
-    #page-home {
-      background: radial-gradient(ellipse 80% 60% at 50% 35%, rgba(184,154,114,.15) 0%, transparent 65%), var(--cream);
-    }
-    .home-hero {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 9rem 5vw 5rem;
-    }
-    .home-eyebrow {
-      font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.8rem;
-      opacity: 0; animation: fadeUp .9s .15s forwards;
-    }
-    .home-title {
-      font-family: var(--font-serif); font-weight: 300;
-      font-size: clamp(3rem, 8vw, 6.5rem); line-height: 1.05;
-      color: var(--brown); margin-bottom: 1.8rem;
-      opacity: 0; animation: fadeUp .9s .3s forwards;
-    }
-    .home-title em { font-style: italic; color: var(--gold); }
-    .home-sub {
-      font-size: .95rem; line-height: 1.95; color: var(--brown-mid);
-      max-width: 480px; margin: 0 auto 2.5rem;
-      opacity: 0; animation: fadeUp .9s .45s forwards;
-    }
-    .home-badge {
-      display: inline-block; background: var(--brown); color: var(--cream);
-      font-family: var(--font-serif); font-size: 1.2rem; font-style: italic;
-      padding: .75rem 2.2rem; margin-bottom: 3rem;
-      opacity: 0; animation: fadeUp .9s .55s forwards;
-    }
-    .home-actions {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-      opacity: 0; animation: fadeUp .9s .7s forwards;
-    }
-    .home-tabs {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--cream-dark);
-      opacity: 0; animation: fadeUp .9s .85s forwards;
-    }
-    .home-tab {
-      padding: 2.5rem 2.8rem; border-right: 1px solid var(--cream-dark);
-      cursor: pointer; transition: background .2s;
-      display: flex; flex-direction: column; gap: .7rem;
-      background: none; border-bottom: none; text-align: left;
-    }
-    .home-tab:last-child { border-right: none; }
-    .home-tab:hover { background: var(--cream-mid); }
-    .home-tab-num { font-family: var(--font-serif); font-size: .85rem; color: var(--gold); }
-    .home-tab-title { font-family: var(--font-serif); font-size: 1.3rem; color: var(--brown); }
-    .home-tab-desc { font-size: .8rem; line-height: 1.75; color: var(--brown-lt); }
-    .home-tab-arrow { font-size: .78rem; color: var(--gold); margin-top: .3rem; }
+/* HOME */
+#page-home{background:radial-gradient(ellipse 80% 60% at 50% 35%,rgba(184,154,114,.15) 0%,transparent 65%),var(--cream)}
+.home-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 5vw 5rem}
+.h-eye{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.8rem;opacity:0;animation:fadeUp .9s .15s forwards}
+.h-title{font-family:var(--serif);font-weight:300;font-size:clamp(3rem,8vw,6.5rem);line-height:1.05;color:var(--brown);margin-bottom:1.4rem;opacity:0;animation:fadeUp .9s .3s forwards}
+.h-title em{font-style:italic;color:var(--gold)}
+.h-sub{font-size:.98rem;line-height:1.95;color:var(--brown-mid);max-width:460px;margin:0 auto 2.5rem;opacity:0;animation:fadeUp .9s .45s forwards}
+.price-pill{display:inline-flex;align-items:stretch;margin-bottom:2.8rem;overflow:hidden;border:1px solid var(--cream-dark);opacity:0;animation:fadeUp .9s .55s forwards}
+.pp-old{padding:.8rem 1.6rem;background:var(--cream-mid);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem}
+.pp-old-num{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:var(--brown-lt);text-decoration:line-through}
+.pp-old-lbl{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brown-lt)}
+.pp-now{padding:.8rem 1.8rem;background:var(--brown);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem}
+.pp-now-num{font-family:var(--serif);font-size:2rem;font-style:italic;color:var(--gold);line-height:1}
+.pp-now-lbl{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dark)}
+.pp-guar{padding:.8rem 1.6rem;background:var(--cream-mid);display:flex;align-items:center;gap:.6rem}
+.pp-guar-text{font-family:var(--serif);font-size:.88rem;font-style:italic;color:var(--brown-mid);line-height:1.45;text-align:left}
+.h-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .7s forwards}
+.home-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--cream-dark);opacity:0;animation:fadeUp .9s .85s forwards}
+.home-tab{padding:2.5rem 2.8rem;border-right:1px solid var(--cream-dark);cursor:pointer;transition:background .2s;display:flex;flex-direction:column;gap:.7rem;background:none;border-bottom:none;text-align:left;font-family:var(--sans)}
+.home-tab:last-child{border-right:none}
+.home-tab:hover{background:var(--cream-mid)}
+.tab-num{font-family:var(--serif);font-size:.85rem;color:var(--gold)}
+.tab-title{font-family:var(--serif);font-size:1.3rem;color:var(--brown)}
+.tab-desc{font-size:.8rem;line-height:1.75;color:var(--brown-lt)}
+.tab-arrow{font-size:.78rem;color:var(--gold);margin-top:.3rem}
 
-    /* HOW IT WORKS */
-    #page-how { background: var(--white); }
-    .page-hero-bar {
-      background: var(--brown); color: var(--cream);
-      padding: 9rem 5vw 5rem; text-align: center;
-    }
-    .page-hero-bar .section-tag { color: var(--gold); }
-    .page-hero-bar .section-title { color: var(--cream); margin-bottom: 1rem; }
-    .page-hero-bar .section-body { color: var(--cream-dark); max-width: 520px; margin: 0 auto; }
-    .steps-container { max-width: 900px; margin: 0 auto; padding: 6rem 5vw; }
-    .step-row { display: grid; grid-template-columns: 80px 1fr; }
-    .step-line-col { display: flex; flex-direction: column; align-items: center; }
-    .step-circle {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: var(--brown); color: var(--cream);
-      font-family: var(--font-serif); font-size: 1.25rem;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .step-connector { width: 1px; flex: 1; background: var(--cream-dark); min-height: 40px; }
-    .step-row:last-child .step-connector { display: none; }
-    .step-content { padding: 0 0 4rem 2rem; }
-    .step-content h3 {
-      font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400;
-      color: var(--brown); margin-bottom: .7rem; margin-top: .6rem;
-    }
-    .step-content p { font-size: .9rem; line-height: 1.95; color: var(--brown-mid); max-width: 560px; }
-    .step-note {
-      display: inline-block; margin-top: 1rem;
-      background: var(--cream-mid); border-left: 3px solid var(--gold);
-      padding: .7rem 1.2rem; font-size: .82rem; color: var(--brown-mid); line-height: 1.7;
-    }
-    .step-cta-area { text-align: center; padding-bottom: 5rem; }
+/* HOW IT WORKS */
+#page-how{background:var(--white)}
+.page-hero{background:var(--brown);padding:9rem 5vw 5rem;text-align:center}
+.page-hero .tag{color:var(--gold)}
+.page-hero .heading{color:var(--cream);margin-bottom:1rem}
+.page-hero .btext{color:var(--cream-dark);max-width:520px;margin:0 auto}
+.gbar{background:var(--gold);padding:1rem 5vw;display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap}
+.gbar span{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--brown);font-weight:500}
+.gbar strong{font-family:var(--serif);font-size:1.05rem;color:var(--brown)}
+.steps-wrap{max-width:860px;margin:0 auto;padding:6rem 5vw}
+.step-row{display:grid;grid-template-columns:76px 1fr}
+.step-line{display:flex;flex-direction:column;align-items:center}
+.step-circle{width:50px;height:50px;border-radius:50%;background:var(--brown);color:var(--cream);font-family:var(--serif);font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-conn{width:1px;flex:1;background:var(--cream-dark);min-height:40px}
+.step-row:last-child .step-conn{display:none}
+.step-body{padding:0 0 3.5rem 2rem}
+.step-body h3{font-family:var(--serif);font-size:1.55rem;font-weight:400;color:var(--brown);margin-bottom:.7rem;margin-top:.5rem}
+.step-body p{font-size:.9rem;line-height:1.95;color:var(--brown-mid);max-width:560px}
+.step-note{display:inline-block;margin-top:.9rem;background:var(--cream-mid);border-left:3px solid var(--gold);padding:.65rem 1.1rem;font-size:.81rem;color:var(--brown-mid);line-height:1.7}
+.step-stag{display:inline-block;margin-bottom:.5rem;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.step-cta{text-align:center;padding:1rem 0 5rem}
+.pricing-sec{background:var(--brown);padding:6rem 5vw;text-align:center}
+.pricing-card{display:inline-block;background:var(--cream);padding:3.5rem 4rem;border:1px solid var(--cream-dark);max-width:420px;width:100%;text-align:left}
+.p-old{font-family:var(--serif);font-size:1.3rem;color:var(--brown-lt);text-decoration:line-through;margin-bottom:.2rem}
+.p-now{font-family:var(--serif);font-size:4.5rem;font-weight:300;color:var(--brown);line-height:1;margin-bottom:.2rem}
+.p-now sup{font-size:1.8rem;vertical-align:super}
+.p-sub{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brown-lt);margin-bottom:2rem}
+.p-list{list-style:none;margin-bottom:2rem;display:flex;flex-direction:column;gap:.75rem}
+.p-list li{font-size:.88rem;line-height:1.6;color:var(--brown-mid);display:flex;gap:.7rem;align-items:flex-start}
+.p-list li::before{content:'✦';color:var(--gold);flex-shrink:0;font-size:.7rem;margin-top:.15rem}
+.p-guar{background:var(--cream-mid);border-left:3px solid var(--gold);padding:.9rem 1.2rem;font-size:.82rem;color:var(--brown-mid);line-height:1.7;margin-bottom:2rem}
+.q-pay{background:var(--brown);color:var(--cream);padding:2rem 2.2rem;display:flex;gap:1.5rem;align-items:flex-start}
+.q-pay-icon{font-family:var(--serif);font-size:2rem;color:var(--gold);flex-shrink:0;line-height:1}
+.q-pay h4{font-family:var(--serif);font-size:1.15rem;color:var(--cream);margin-bottom:.4rem}
+.q-pay p{font-size:.82rem;color:var(--cream-dark);line-height:1.75}
+.hi{font-family:var(--serif);font-size:1.4rem;color:var(--gold)}
 
-    /* VENUES */
-    #page-venues { background: var(--cream); }
-    .venues-hero { background: var(--brown); padding: 9rem 5vw 5rem; text-align: center; }
-    .venues-hero .section-title { color: var(--cream); }
-    .venues-hero .section-body { color: var(--cream-dark); max-width: 520px; margin: 1rem auto 0; }
-    .venues-grid-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 5vw; }
-    .venues-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-    .venue-card {
-      background: var(--white); border: 1px solid var(--cream-dark);
-      padding: 2.2rem 2rem; cursor: pointer;
-      transition: border-color .2s, transform .2s, box-shadow .2s;
-      display: flex; flex-direction: column; gap: .5rem;
-    }
-    .venue-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(59,42,26,.07); }
-    .venue-card-name { font-family: var(--font-serif); font-size: 1.3rem; color: var(--brown); }
-    .venue-card-loc { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
-    .venue-card-desc { font-size: .82rem; line-height: 1.75; color: var(--brown-lt); margin-top: .4rem; }
-    .venue-card-badge {
-      display: inline-block; margin-top: .8rem; background: var(--cream-mid);
-      font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
-      color: var(--brown-mid); padding: .3rem .8rem;
-    }
-    .venues-note { text-align: center; padding: 1rem 5vw 5rem; font-size: .85rem; color: var(--brown-lt); line-height: 1.8; }
-    .venues-note a { color: var(--gold); text-decoration: underline; cursor: pointer; }
+/* VENUES */
+#page-venues{background:var(--cream)}
+.venues-hero{background:var(--brown);padding:9rem 5vw 5rem;text-align:center}
+.venues-hero .heading{color:var(--cream)}
+.venues-hero .btext{color:var(--cream-dark);max-width:520px;margin:1rem auto 0}
+.venues-wrap{max-width:1100px;margin:0 auto;padding:5rem 5vw 3rem}
+.venues-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem}
+.venue-card{background:var(--white);border:1px solid var(--cream-dark);cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.venue-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 32px rgba(59,42,26,.08)}
+.vc-body{padding:1.8rem 1.8rem 1.2rem;flex:1}
+.vc-name{font-family:var(--serif);font-size:1.3rem;color:var(--brown);margin-bottom:.3rem}
+.vc-loc{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.vc-desc{font-size:.82rem;line-height:1.75;color:var(--brown-lt)}
+.vc-tags{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 1.8rem 1.2rem}
+.vc-tag{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;background:var(--cream-mid);color:var(--brown-mid);padding:.25rem .7rem}
+.vc-foot{border-top:1px solid var(--cream-dark);padding:1rem 1.8rem;display:flex;align-items:center;justify-content:space-between}
+.vc-faq-count{font-size:.72rem;color:var(--brown-lt)}
+.vc-ask{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid var(--gold);padding:.35rem .9rem;cursor:pointer;font-family:var(--sans);transition:background .2s,color .2s}
+.vc-ask:hover{background:var(--gold);color:var(--brown)}
+.venues-note{text-align:center;padding:1rem 5vw 5rem;font-size:.85rem;color:var(--brown-lt);line-height:1.8}
+.venues-note button{color:var(--gold);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans);font-size:.85rem}
 
-    /* FAQ */
-    #page-faq { background: var(--cream); }
-    .faq-hero { background: var(--cream-mid); padding: 9rem 5vw 5rem; text-align: center; border-bottom: 1px solid var(--cream-dark); }
-    .faq-wrap { max-width: 740px; margin: 0 auto; padding: 5rem 5vw; }
-    .faq-item { border-bottom: 1px solid var(--cream-dark); }
-    .faq-q {
-      width: 100%; background: none; border: none; text-align: left;
-      padding: 1.5rem 0; font-family: var(--font-serif); font-size: 1.15rem;
-      color: var(--brown); cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-    }
-    .faq-q:hover { color: var(--gold); }
-    .faq-icon { font-size: 1.3rem; color: var(--gold); transition: transform .3s; flex-shrink: 0; }
-    .faq-a { max-height: 0; overflow: hidden; font-size: .88rem; line-height: 1.95; color: var(--brown-mid); transition: max-height .4s ease, padding .3s; }
-    .faq-item.open .faq-a { max-height: 400px; padding-bottom: 1.4rem; }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(59,42,26,.6);z-index:400;align-items:center;justify-content:center;padding:2rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);max-width:640px;width:100%;max-height:85vh;overflow-y:auto;display:flex;flex-direction:column}
+.modal-head{padding:2.5rem 2.5rem 1.5rem;border-bottom:1px solid var(--cream-dark);display:flex;justify-content:space-between;align-items:flex-start}
+.modal-head h2{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--brown)}
+.modal-x{background:none;border:none;font-size:1.5rem;color:var(--brown-lt);cursor:pointer;padding:0;line-height:1}
+.modal-body{padding:2rem 2.5rem;flex:1}
+.modal-sec{font-family:var(--serif);font-size:1.15rem;color:var(--brown);margin-bottom:1rem;margin-top:1.5rem}
+.modal-sec:first-child{margin-top:0}
+.modal-faq-list{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.5rem}
+.modal-faq-item{background:var(--cream-mid);padding:1rem 1.2rem}
+.modal-faq-q{font-family:var(--serif);font-size:1rem;color:var(--brown);margin-bottom:.4rem}
+.modal-faq-a{font-size:.82rem;line-height:1.75;color:var(--brown-mid)}
+.modal-form{display:flex;flex-direction:column;gap:.7rem;margin-top:1rem}
+.modal-form input,.modal-form textarea{width:100%;padding:.8rem 1rem;background:var(--cream);border:1px solid var(--cream-dark);color:var(--brown);font-family:var(--sans);font-size:.85rem;outline:none;transition:border-color .2s}
+.modal-form input:focus,.modal-form textarea:focus{border-color:var(--gold)}
+.modal-form textarea{min-height:90px;resize:vertical}
+.modal-note{font-size:.75rem;color:var(--brown-lt);line-height:1.7;margin-top:.5rem}
 
-    /* ABOUT */
-    #page-about { background: var(--cream); }
-    .about-hero { background: var(--brown); padding: 9rem 5vw 6rem; text-align: center; }
-    .about-hero .section-title { color: var(--cream); }
-    .about-hero .section-body { color: var(--cream-dark); max-width: 560px; margin: 1rem auto 0; }
-    .about-body { max-width: 1060px; margin: 0 auto; padding: 6rem 5vw; }
-    .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-bottom: 6rem; }
-    .about-img-placeholder {
-      width: 100%; aspect-ratio: 4/5;
-      background: linear-gradient(145deg, var(--cream-dark) 0%, var(--cream-mid) 100%);
-      display: flex; align-items: flex-end; padding: 1.5rem;
-      border: 1px solid var(--cream-dark);
-      font-family: var(--font-serif); font-style: italic; font-size: .9rem; color: var(--brown-lt);
-    }
-    .about-content { display: flex; flex-direction: column; gap: 1.5rem; padding-top: 1rem; }
-    .about-content p { font-size: .93rem; line-height: 2; color: var(--brown-mid); }
-    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 6rem; }
-    .stat-box { background: var(--brown); color: var(--cream); padding: 2.5rem 2rem; text-align: center; }
-    .stat-num { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; color: var(--gold); line-height: 1; }
-    .stat-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; margin-top: .6rem; color: var(--cream-dark); }
-    .about-fleur { background: var(--cream-mid); border: 1px solid var(--cream-dark); padding: 3rem; display: flex; gap: 2rem; align-items: flex-start; }
-    .about-fleur-icon { font-family: var(--font-serif); font-size: 3rem; color: var(--gold); flex-shrink: 0; }
-    .about-fleur-text h3 { font-family: var(--font-serif); font-size: 1.4rem; color: var(--brown); margin-bottom: .6rem; }
-    .about-fleur-text p { font-size: .88rem; line-height: 1.9; color: var(--brown-mid); }
+/* FAQ */
+#page-faq{background:var(--cream)}
+.faq-hero{background:var(--cream-mid);padding:9rem 5vw 5rem;text-align:center;border-bottom:1px solid var(--cream-dark)}
+.faq-wrap{max-width:740px;margin:0 auto;padding:5rem 5vw}
+.faq-item{border-bottom:1px solid var(--cream-dark)}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:1.5rem 0;font-family:var(--serif);font-size:1.15rem;color:var(--brown);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{font-size:1.3rem;color:var(--gold);transition:transform .3s;flex-shrink:0}
+.faq-a{max-height:0;overflow:hidden;font-size:.88rem;line-height:1.95;color:var(--brown-mid);transition:max-height .45s ease,padding .3s}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:1.4rem}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
 
-    /* CONTACT */
-    #page-contact { background: var(--brown); }
-    .contact-inner {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 10rem 5vw 6rem;
-    }
-    #page-contact .section-tag { color: var(--gold); }
-    #page-contact .section-title { color: var(--cream); margin-bottom: 1rem; }
-    #page-contact .section-body { color: var(--cream-dark); max-width: 480px; margin: 0 auto 3.5rem; }
-    .contact-methods { display: flex; gap: 4rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3.5rem; }
-    .contact-method { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
-    .contact-method-label { font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); }
-    .contact-method a { color: var(--cream); text-decoration: none; font-family: var(--font-serif); font-size: 1.35rem; font-style: italic; transition: color .2s; }
-    .contact-method a:hover { color: var(--gold); }
-    .contact-divider { width: 60px; height: 1px; background: rgba(255,255,255,.2); margin: 0 auto 3rem; }
-    .contact-form-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream-dark); margin-bottom: 1.2rem; }
-    .contact-form { display: flex; flex-direction: column; gap: .8rem; width: 100%; max-width: 440px; margin: 0 auto; }
-    .contact-form input, .contact-form textarea {
-      width: 100%; padding: .9rem 1.4rem;
-      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2);
-      color: var(--cream); font-family: var(--font-sans); font-size: .88rem; outline: none; transition: border-color .2s;
-    }
-    .contact-form textarea { min-height: 110px; resize: vertical; }
-    .contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(245,239,228,.4); }
-    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--gold); }
+/* ABOUT */
+#page-about{background:var(--cream)}
+.about-hero{background:var(--brown);padding:9rem 5vw 6rem;text-align:center}
+.about-hero .heading{color:var(--cream)}
+.about-hero .btext{color:var(--cream-dark);max-width:560px;margin:1rem auto 0}
+.about-body{max-width:1060px;margin:0 auto;padding:6rem 5vw}
+.about-split{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-bottom:6rem}
+.about-img{width:100%;aspect-ratio:4/5;background:linear-gradient(145deg,var(--cream-dark) 0%,var(--cream-mid) 100%);display:flex;align-items:flex-end;padding:1.5rem;border:1px solid var(--cream-dark);font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--brown-lt)}
+.about-content{display:flex;flex-direction:column;gap:1.5rem;padding-top:1rem}
+.about-content p{font-size:.93rem;line-height:2;color:var(--brown-mid)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:6rem}
+.stat-box{background:var(--brown);color:var(--cream);padding:2.5rem 2rem;text-align:center}
+.stat-num{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:var(--gold);line-height:1}
+.stat-lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-top:.6rem;color:var(--cream-dark)}
+.about-note{background:var(--cream-mid);border:1px solid var(--cream-dark);padding:3rem}
+.about-note h3{font-family:var(--serif);font-size:1.4rem;color:var(--brown);margin-bottom:.7rem}
+.about-note p{font-size:.88rem;line-height:1.9;color:var(--brown-mid)}
 
-    /* FOOTER */
-    footer {
-      background: rgba(0,0,0,.22); padding: 2rem 5vw;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    }
-    .footer-logo { font-family: var(--font-serif); font-size: 1rem; color: var(--cream); cursor: pointer; }
-    .footer-logo span { color: var(--gold); }
-    .footer-links { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
-    .footer-links a { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(245,239,228,.45); cursor: pointer; transition: color .2s; }
-    .footer-links a:hover { color: var(--gold); }
-    .footer-copy { font-size: .68rem; color: rgba(245,239,228,.28); }
+/* CONTACT */
+#page-contact{background:var(--brown)}
+.contact-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10rem 5vw 6rem}
+#page-contact .tag{color:var(--gold)}
+#page-contact .heading{color:var(--cream);margin-bottom:1rem}
+#page-contact .btext{color:var(--cream-dark);max-width:480px;margin:0 auto 3rem}
+.contact-methods{display:flex;gap:4rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.contact-method{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.cm-label{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold)}
+.cm-link{color:var(--cream);text-decoration:none;font-family:var(--serif);font-size:1.35rem;font-style:italic;transition:color .2s}
+.cm-link:hover{color:var(--gold)}
+.reg-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);padding:3rem;max-width:460px;width:100%;text-align:left}
+.reg-box h3{font-family:var(--serif);font-size:1.4rem;color:var(--cream);margin-bottom:.4rem}
+.reg-box p{font-size:.8rem;color:var(--cream-dark);margin-bottom:1.8rem;line-height:1.7}
+.reg-form{display:flex;flex-direction:column;gap:.8rem}
+.reg-form input{width:100%;padding:.9rem 1.2rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);color:var(--cream);font-family:var(--sans);font-size:.88rem;outline:none;transition:border-color .2s}
+.reg-form input::placeholder{color:rgba(245,239,228,.4)}
+.reg-form input:focus{border-color:var(--gold)}
 
-    /* Non-brown page footer override */
-    .footer-light {
-      background: var(--brown); padding: 2rem 5vw;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    }
+/* QUESTIONNAIRE */
+#page-questionnaire{background:var(--cream)}
+.q-inner{flex:1;max-width:680px;margin:0 auto;padding:9rem 5vw 6rem;width:100%}
+.q-sub{font-size:.88rem;color:var(--brown-mid);line-height:1.8;margin-bottom:3rem}
+.q-form{display:flex;flex-direction:column;gap:1.8rem}
+.q-field label{display:block;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brown-mid);margin-bottom:.55rem}
+.q-field input,.q-field select,.q-field textarea{width:100%;padding:.85rem 1.1rem;background:var(--white);border:1px solid var(--cream-dark);color:var(--brown);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s}
+.q-field input:focus,.q-field select:focus,.q-field textarea:focus{border-color:var(--gold)}
+.q-field textarea{min-height:90px;resize:vertical}
+.q-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A5740' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.q-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .home-tabs { grid-template-columns: 1fr; }
-      .home-tab { border-right: none; border-bottom: 1px solid var(--cream-dark); }
-      .about-split { grid-template-columns: 1fr; gap: 2.5rem; }
-      .stat-row { grid-template-columns: 1fr 1fr; }
-      .contact-methods { gap: 2rem; }
-      .nav-links, .nav-cta { display: none; }
-      .hamburger { display: flex; }
-    }
-    @media (max-width: 540px) {
-      .stat-row { grid-template-columns: 1fr; }
-      .step-row { grid-template-columns: 56px 1fr; }
-      .about-fleur { flex-direction: column; gap: 1rem; }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:860px){.home-tabs{grid-template-columns:1fr}.home-tab{border-right:none;border-bottom:1px solid var(--cream-dark)}.about-split{grid-template-columns:1fr;gap:2.5rem}.stat-row{grid-template-columns:1fr 1fr}.contact-methods{gap:2rem}.nav-links,.nav-cta{display:none}.hamburger{display:flex}.q-row{grid-template-columns:1fr}}
+@media(max-width:540px){.stat-row{grid-template-columns:1fr}.step-row{grid-template-columns:56px 1fr}.pricing-card{padding:2.5rem 1.8rem}}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="main-nav">
-  <span class="nav-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
+  <span class="nav-logo" id="nav-logo">Venue<span>Consultant</span>.ca</span>
   <ul class="nav-links">
-    <li><a onclick="goto('how')" data-page="how">How It Works</a></li>
-    <li><a onclick="goto('venues')" data-page="venues">Venues</a></li>
-    <li><a onclick="goto('faq')" data-page="faq">FAQ</a></li>
-    <li><a onclick="goto('about')" data-page="about">About Us</a></li>
+    <li><button id="nav-how">How It Works</button></li>
+    <li><button id="nav-venues">Venues</button></li>
+    <li><button id="nav-faq">FAQ</button></li>
+    <li><button id="nav-about">About Us</button></li>
   </ul>
-  <button class="nav-cta" onclick="goto('contact')">Get Started — Free</button>
-  <button class="hamburger" onclick="openMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-cta" id="nav-cta">Get Started &mdash; Free</button>
+  <button class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
-  <button class="mobile-close" onclick="closeMenu()">x</button>
-  <a onclick="goto('home');closeMenu()">Home</a>
-  <a onclick="goto('how');closeMenu()">How It Works</a>
-  <a onclick="goto('venues');closeMenu()">Venues</a>
-  <a onclick="goto('faq');closeMenu()">FAQ</a>
-  <a onclick="goto('about');closeMenu()">About Us</a>
-  <a onclick="goto('contact');closeMenu()">Get Started</a>
+  <button class="mobile-close" id="mob-close">&#x2715;</button>
+  <button id="mob-home">Home</button>
+  <button id="mob-how">How It Works</button>
+  <button id="mob-venues">Venues</button>
+  <button id="mob-faq">FAQ</button>
+  <button id="mob-about">About Us</button>
+  <button id="mob-contact">Get Started</button>
+</div>
+
+<div class="modal-overlay" id="venue-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="modal-name"></h2>
+        <p style="font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:.3rem" id="modal-loc"></p>
+      </div>
+      <button class="modal-x" id="modal-x">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-sec">Community Q&amp;A</p>
+      <div class="modal-faq-list" id="modal-faq-list"></div>
+      <p class="modal-sec">Ask a Question</p>
+      <div class="modal-form">
+        <input type="text" placeholder="Your name" id="ask-name"/>
+        <input type="email" placeholder="Your email" id="ask-email"/>
+        <textarea placeholder="What would you like to know about this venue?" id="ask-q"></textarea>
+        <button class="btn-dark" id="ask-submit">Submit Question</button>
+        <p class="modal-note">Questions reviewed by our team. Useful ones are published here within a few days.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="home-hero">
-    <p class="home-eyebrow">Toronto's Exclusive Wedding Venue Consultants</p>
-    <h1 class="home-title">Your Dream Venue,<br><em>Negotiated For You</em></h1>
-    <p class="home-sub">Book any Toronto wedding venue through us and receive an exclusive 10% discount — completely free to couples.</p>
-    <div class="home-badge">Exclusive 10% off &middot; Every venue &middot; Always free</div>
-    <div class="home-actions">
-      <button class="btn-primary" onclick="goto('contact')">Get Started Free</button>
-      <button class="btn-outline" onclick="goto('how')">See How It Works</button>
+    <p class="h-eye">Wedding Venue Consultants &middot; Toronto &middot; Worldwide</p>
+    <h1 class="h-title">Your Dream Venue,<br><em>Negotiated For You</em></h1>
+    <p class="h-sub">Guaranteed value worth more than $99 &mdash; or we refund the difference.</p>
+    <div class="price-pill">
+      <div class="pp-old"><span class="pp-old-num">$299</span><span class="pp-old-lbl">Regular</span></div>
+      <div class="pp-now"><span class="pp-now-num">$99</span><span class="pp-now-lbl">Promotional</span></div>
+      <div class="pp-guar"><span style="color:var(--gold)">&#10022;</span><span class="pp-guar-text">Guaranteed worth<br>more than you pay</span></div>
+    </div>
+    <div class="h-actions">
+      <button class="btn-dark" id="home-start">Get Started Free</button>
+      <button class="btn-outline" id="home-how">See How It Works</button>
     </div>
   </div>
   <div class="home-tabs">
-    <button class="home-tab" onclick="goto('how')">
-      <span class="home-tab-num">01</span>
-      <span class="home-tab-title">How It Works</span>
-      <span class="home-tab-desc">Register free, browse our partner venues, and let us unlock your exclusive 10% discount in four easy steps.</span>
-      <span class="home-tab-arrow">Explore the process &rarr;</span>
-    </button>
-    <button class="home-tab" onclick="goto('venues')">
-      <span class="home-tab-num">02</span>
-      <span class="home-tab-title">Our Venues</span>
-      <span class="home-tab-desc">From Casa Loma to Aga Khan Museum — Toronto's finest venues, all with guaranteed savings.</span>
-      <span class="home-tab-arrow">Browse venues &rarr;</span>
-    </button>
-    <button class="home-tab" onclick="goto('about')">
-      <span class="home-tab-num">03</span>
-      <span class="home-tab-title">About Us</span>
-      <span class="home-tab-desc">15+ years of deep venue relationships in North America, working entirely on your behalf.</span>
-      <span class="home-tab-arrow">Meet the team &rarr;</span>
-    </button>
+    <button class="home-tab" id="tab-how"><span class="tab-num">01</span><span class="tab-title">How It Works</span><span class="tab-desc">Register free, fill a short questionnaire, and we handle the rest &mdash; from inquiry to negotiated offer.</span><span class="tab-arrow">See the process &rarr;</span></button>
+    <button class="home-tab" id="tab-venues"><span class="tab-num">02</span><span class="tab-title">Our Venues</span><span class="tab-desc">Browse top wedding venues. Ask questions, read community Q&amp;A, and find your shortlist.</span><span class="tab-arrow">Browse venues &rarr;</span></button>
+    <button class="home-tab" id="tab-about"><span class="tab-num">03</span><span class="tab-title">About Us</span><span class="tab-desc">10+ years of relationships with venues across Toronto, Canada, the US, and worldwide.</span><span class="tab-arrow">Meet the team &rarr;</span></button>
   </div>
-  <footer class="footer-light">
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-      <li><a onclick="goto('contact')">Contact</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <footer class="foot"><span class="foot-logo" id="fl0-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl0-how">How It Works</button></li><li><button id="fl0-venues">Venues</button></li><li><button id="fl0-faq">FAQ</button></li><li><button id="fl0-about">About</button></li><li><button id="fl0-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <!-- HOW IT WORKS -->
 <div class="page" id="page-how">
-  <div class="page-hero-bar">
-    <p class="section-tag">The Process</p>
-    <h1 class="section-title">Simple, transparent,<br><em>always in your favour</em></h1>
-    <p class="section-body">Four steps from registration to 10% saved. No fees, no catches.</p>
+  <div class="page-hero">
+    <p class="tag">The Process</p>
+    <h1 class="heading">We do the work.<br><em>You choose the venue.</em></h1>
+    <p class="btext">What normally takes couples 3 months, we complete in 2 weeks &mdash; anywhere in the world.</p>
   </div>
-  <div class="steps-container">
-    <div class="step-row reveal">
-      <div class="step-line-col">
-        <div class="step-circle">1</div>
-        <div class="step-connector"></div>
-      </div>
-      <div class="step-content">
-        <h3>Create a Free Account</h3>
-        <p>Sign up with your name, email, and phone number — completely free. Your account gives you access to our full venue network and unlocks the discount system.</p>
-        <span class="step-note">No credit card required. Registration is always free for couples.</span>
-      </div>
-    </div>
-    <div class="step-row reveal">
-      <div class="step-line-col">
-        <div class="step-circle">2</div>
-        <div class="step-connector"></div>
-      </div>
-      <div class="step-content">
-        <h3>Browse and Find Your Venue</h3>
-        <p>Explore our curated list of Toronto's top wedding venues — from grand estates like Casa Loma to modern landmarks like the Aga Khan Museum. Filter by style, capacity, and location.</p>
-        <span class="step-note">Every venue in our network is personally vetted by our team.</span>
-      </div>
-    </div>
-    <div class="step-row reveal">
-      <div class="step-line-col">
-        <div class="step-circle">3</div>
-        <div class="step-connector"></div>
-      </div>
-      <div class="step-content">
-        <h3>Connect With the Venue Through Us</h3>
-        <p>Found a venue you love? Use our platform to send an enquiry and arrange a site visit. We facilitate the introduction — no cold calls, no unanswered emails. Tour the space and fall in love with it.</p>
-        <span class="step-note">Our team is available to advise you throughout this stage.</span>
-      </div>
-    </div>
-    <div class="step-row reveal">
-      <div class="step-line-col">
-        <div class="step-circle">4</div>
-        <div class="step-connector"></div>
-      </div>
-      <div class="step-content">
-        <h3>Confirm Booking and Receive Your Discount Code</h3>
-        <p>Once you are ready to book, return to the platform and click <strong>"Confirm Booking."</strong> Our system instantly generates a unique discount code and sends it by email to both you and the venue. Simply quote your code before signing the contract and your 10% is applied automatically.</p>
-        <span class="step-note">The discount code is verified directly with the venue — no negotiation needed on your end.</span>
-      </div>
-    </div>
-    <div class="step-cta-area reveal">
-      <p class="section-tag" style="margin-bottom:1.4rem">Ready to start?</p>
-      <button class="btn-primary" onclick="goto('contact')">Create Your Free Account</button>
-    </div>
+  <div class="gbar"><strong>Our Guarantee:</strong><span>30+ venues contacted</span><span>&middot;</span><span>5 shortlisted</span><span>&middot;</span><span>2 negotiated</span><span>&middot;</span><span>Delivered in 2 weeks</span></div>
+  <div class="steps-wrap">
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">1</div><div class="step-conn"></div></div><div class="step-body"><span class="step-stag">Free</span><h3>Register Your Account</h3><p>Sign up with your email and phone number. Free, always. Your account gives you access to our venue directory, community Q&amp;A, and the ability to submit your questionnaire.</p><span class="step-note">No credit card. No commitment. Just a free account.</span></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">2</div><div class="step-conn"></div></div><div class="step-body"><span class="step-stag">Free</span><h3>Fill Your Wedding Questionnaire</h3><p>Tell us your wedding date, guest count, budget, style preferences, and any specific requirements. This takes about 5 minutes.</p><span class="step-note">The more detail you give, the better we can match you.</span></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">3</div><div class="step-conn"></div></div><div class="step-body"><span class="step-stag">$99 one-time</span><h3>Pay to Activate Your Search</h3><p>A one-time fee of $99 activates your search. Our team immediately begins contacting 30+ venues as your personal wedding planning consultants.</p><div class="q-pay" style="margin-top:1.2rem;max-width:480px"><div class="q-pay-icon">$</div><div><h4>Promotional pricing</h4><p>Regular price <s>$299</s> &mdash; now <span class="hi">$99</span>. Guaranteed to be worth more than you pay.</p></div></div></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">4</div><div class="step-conn"></div></div><div class="step-body"><h3>We Contact 30+ Venues</h3><p>Using AI-assisted outreach, our team sends personalised inquiries to 30+ venues that match your criteria. We present ourselves as experienced wedding planning consultants &mdash; because we are.</p><span class="step-note">We ask about pricing, availability, minimum spend, included services, and flexibility.</span></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">5</div><div class="step-conn"></div></div><div class="step-body"><h3>We Shortlist the Best 5</h3><p>From the responses we receive (typically around 15), our team filters down to the 5 venues that best match your brief based on fit, value, and availability.</p><span class="step-note">You receive a clear summary of each of the 5 venues by email within 2 weeks.</span></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">6</div><div class="step-conn"></div></div><div class="step-body"><h3>You Choose 2 &mdash; We Negotiate</h3><p>From the shortlist of 5, you select your top 2 favourites. We then negotiate on your behalf, leveraging our relationships to secure the best possible price and terms.</p><span class="step-note">Our negotiated savings are guaranteed to exceed the $99 you paid.</span></div></div>
+    <div class="step-row reveal"><div class="step-line"><div class="step-circle">7</div><div class="step-conn"></div></div><div class="step-body"><h3>You Sign and Save</h3><p>Review the negotiated offers, visit the venues, and sign with the one you love. If our negotiated value doesn't exceed $99, we refund the difference.</p><span class="step-note">You are never obligated to book.</span></div></div>
+    <div class="step-cta reveal"><p class="tag" style="margin-bottom:1.2rem">Ready? It starts with a free account.</p><button class="btn-dark" id="how-start">Register Free</button>&nbsp;&nbsp;<button class="btn-outline" id="how-q">See the Questionnaire</button></div>
   </div>
-  <footer class="footer-light">
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-      <li><a onclick="goto('contact')">Contact</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <div class="pricing-sec">
+    <p class="tag" style="color:var(--gold)">Pricing</p>
+    <h2 class="heading" style="color:var(--cream);margin-bottom:3rem">Simple, transparent,<br><em>no surprises</em></h2>
+    <div class="pricing-card"><span class="tag">Full Service</span><p class="p-old">$299</p><p class="p-now"><sup>$</sup>99</p><p class="p-sub">One-time &middot; Promotional price</p><ul class="p-list"><li>30+ venue inquiries sent on your behalf</li><li>Shortlist of 5 best-matched venues</li><li>2 venues fully negotiated by our team</li><li>Results delivered within 2 weeks</li><li>10+ years of planner expertise</li><li>Free account &amp; questionnaire to get started</li></ul><div class="p-guar"><strong>Our Guarantee</strong><br>The value of what we negotiate will always exceed $99. If it doesn't, we refund the difference.</div><button class="btn-dark" style="width:100%" id="pricing-start">Get Started Free</button></div>
+  </div>
+  <footer class="foot"><span class="foot-logo" id="fl1-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl1-how">How It Works</button></li><li><button id="fl1-venues">Venues</button></li><li><button id="fl1-faq">FAQ</button></li><li><button id="fl1-about">About</button></li><li><button id="fl1-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <!-- VENUES -->
 <div class="page" id="page-venues">
-  <div class="venues-hero">
-    <p class="section-tag">Our Venue Network</p>
-    <h1 class="section-title" style="color:var(--cream)">Toronto's finest venues,<br><em>all with 10% off</em></h1>
-    <p class="section-body">Every property below is a verified partner. Book through us and your exclusive discount is guaranteed.</p>
-  </div>
-  <div class="venues-grid-wrap">
-    <div class="venues-grid">
-      <div class="venue-card reveal" onclick="goto('contact')">
-        <p class="venue-card-name">Casa Loma</p>
-        <p class="venue-card-loc">Midtown Toronto</p>
-        <p class="venue-card-desc">A magnificent Gothic Revival castle offering grand ballrooms and sprawling terraced gardens. Toronto's most iconic wedding backdrop.</p>
-        <span class="venue-card-badge">Castle &middot; Garden &middot; Ballroom</span>
-      </div>
-      <div class="venue-card reveal" onclick="goto('contact')">
-        <p class="venue-card-name">The Eglinton Grand</p>
-        <p class="venue-card-loc">Midtown Toronto</p>
-        <p class="venue-card-desc">A heritage landmark with Art Deco grandeur. Soaring ceilings, dramatic chandeliers, and timeless elegance in the heart of the city.</p>
-        <span class="venue-card-badge">Heritage &middot; Art Deco &middot; Ballroom</span>
-      </div>
-      <div class="venue-card reveal" onclick="goto('contact')">
-        <p class="venue-card-name">Graydon Hall Manor</p>
-        <p class="venue-card-loc">North York</p>
-        <p class="venue-card-desc">A storybook English manor house set on lush grounds, offering intimate elegance and old-world romance just minutes from downtown.</p>
-        <span class="venue-card-badge">Manor &middot; Garden &middot; Estate</span>
-      </div>
-      <div class="venue-card reveal" onclick="goto('contact')">
-        <p class="venue-card-name">Angus Glen Golf Club</p>
-        <p class="venue-card-loc">Markham</p>
-        <p class="venue-card-desc">Championship golf course setting with a stunning clubhouse and panoramic fairway views for up to 300 guests.</p>
-        <span class="venue-card-badge">Golf Club &middot; Panoramic &middot; Elegant</span>
-      </div>
-      <div class="venue-card reveal" onclick="goto('contact')">
-        <p class="venue-card-name">Aga Khan Museum</p>
-        <p class="venue-card-loc">North York</p>
-        <p class="venue-card-desc">An architectural masterpiece surrounded by geometric gardens. Celebrate surrounded by world-class art and design.</p>
-        <span class="venue-card-badge">Museum &middot; Architecture &middot; Modern</span>
-      </div>
-      <div class="venue-card reveal" onclick="goto('contact')" style="border-style:dashed;align-items:center;justify-content:center;text-align:center;min-height:200px;">
-        <p class="venue-card-name" style="color:var(--gold)">+ Many More</p>
-        <p class="venue-card-desc" style="text-align:center;margin-top:.4rem">Our network spans the Greater Toronto Area. Contact us for a personalised match based on your style and budget.</p>
-        <span class="venue-card-badge" style="margin-top:.8rem">Enquire for Full List &rarr;</span>
-      </div>
-    </div>
-  </div>
-  <p class="venues-note reveal">
-    All venues carry a guaranteed 10% discount when booked through VenueConsultant.ca.<br>
-    <a onclick="goto('contact')">Contact us to find your perfect match &rarr;</a>
-  </p>
-  <footer class="footer-light">
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-      <li><a onclick="goto('contact')">Contact</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <div class="venues-hero"><p class="tag">Venue Directory</p><h1 class="heading" style="color:var(--cream)">Toronto's top wedding venues,<br><em>with real insights</em></h1><p class="btext">Browse, ask questions, and read community Q&amp;A. Register free to unlock the full directory.</p></div>
+  <div class="venues-wrap"><div class="venues-grid" id="venues-grid"></div></div>
+  <p class="venues-note reveal">This is a selection of our partner venues. We work with many more across the GTA and worldwide.<br><button id="venues-reg-btn">Register free to see the full list &rarr;</button></p>
+  <footer class="foot"><span class="foot-logo" id="fl2-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl2-how">How It Works</button></li><li><button id="fl2-venues">Venues</button></li><li><button id="fl2-faq">FAQ</button></li><li><button id="fl2-about">About</button></li><li><button id="fl2-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <!-- FAQ -->
 <div class="page" id="page-faq">
-  <div class="faq-hero">
-    <p class="section-tag">FAQ</p>
-    <h1 class="section-title">Common Questions</h1>
-  </div>
+  <div class="faq-hero"><p class="tag">FAQ</p><h1 class="heading">Common Questions</h1></div>
   <div class="faq-wrap">
-    <div class="faq-item reveal">
-      <button class="faq-q">Is this service really free for couples? <span class="faq-icon">+</span></button>
-      <div class="faq-a">Yes, 100% free. We never charge couples at any point. We are compensated through our partnerships with venues, which has absolutely no effect on the discount you receive. You always get your full 10% off.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">How does the 10% discount code work? <span class="faq-icon">+</span></button>
-      <div class="faq-a">Once you have visited a venue and decided to book, return to the platform and click "Confirm Booking." Our system instantly generates a unique discount code and emails it to both you and the venue. You simply quote this code before signing your contract and the venue applies your 10% discount. No negotiation needed on your end.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">Can I contact venues directly and still use the discount? <span class="faq-icon">+</span></button>
-      <div class="faq-a">No — the discount is exclusively available when you connect with the venue through our platform. This is how we are able to guarantee 10% for every booking. If you have already made direct contact with a venue, reach out to us and we will see what we can do.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">Which venues are in your network? <span class="faq-icon">+</span></button>
-      <div class="faq-a">Current partner venues include Casa Loma, The Eglinton Grand, Graydon Hall Manor, Angus Glen Golf Club, Aga Khan Museum, and more. We are continuously adding new venues. Contact us for a full, up-to-date list tailored to your style and budget.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">Do you only work in Toronto? <span class="faq-icon">+</span></button>
-      <div class="faq-a">Our primary focus is the Greater Toronto Area, but our parent company Fleur Weddings has experience across North America. If you are looking at a venue outside the GTA, reach out and we will let you know if we can help.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">How early should we register? <span class="faq-icon">+</span></button>
-      <div class="faq-a">The earlier the better. Popular Toronto venues book 12 to 18 months in advance. We recommend registering as soon as you have a rough wedding date in mind, even if everything else is still undecided.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">Who is behind VenueConsultant.ca? <span class="faq-icon">+</span></button>
-      <div class="faq-a">VenueConsultant.ca is powered by the Fleur Weddings team — senior wedding planners with 15+ years of experience across North America. We have built deep, genuine relationships with Toronto's top venues, which is how we are able to guarantee exclusive access and savings unavailable elsewhere.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-q">Can you help with other wedding planning beyond venues? <span class="faq-icon">+</span></button>
-      <div class="faq-a">Our core service through this platform is venue matching and discount access. However, as the Fleur Weddings team we also offer comprehensive wedding planning. Ask us about this during your consultation.</div>
-    </div>
-    <div style="margin-top:4rem;text-align:center;" class="reveal">
-      <p class="section-tag" style="margin-bottom:1.2rem">Still have questions?</p>
-      <button class="btn-primary" onclick="goto('contact')">Get in Touch</button>
-    </div>
+    <div class="faq-item reveal"><button class="faq-q">What exactly do I get for $99? <span class="faq-icon">+</span></button><div class="faq-a">We contact 30+ wedding venues on your behalf, review all responses, shortlist the 5 best matches, and then fully negotiate with your top 2 choices. You receive a clear summary within 2 weeks. The $99 is a one-time fee &mdash; there are no other charges from us.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">What is your guarantee exactly? <span class="faq-icon">+</span></button><div class="faq-a">We guarantee the value of what we negotiate will always exceed $99. For example, if a venue is $20,000 and we secure a 10% discount, 20% of that saving is passed on to you &mdash; that is $400 in savings on a $20,000 venue, compared to the $99 you paid us. If our negotiated value does not exceed $99, we refund the difference.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">How long does the whole process take? <span class="faq-icon">+</span></button><div class="faq-a">We deliver your shortlist of 5 venues within 2 weeks of receiving your payment and completed questionnaire. The full negotiation typically takes another 1 to 2 weeks. Couples doing this alone typically spend 3 months on the same process.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">What if I contact venues directly after receiving the shortlist? <span class="faq-icon">+</span></button><div class="faq-a">You are free to contact venues directly. However, the negotiated discount only applies when the booking goes through us. If you go directly, you will not receive the negotiated rate and we retain the $99 fee for the work already completed.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Do I have to book one of the venues you shortlist? <span class="faq-icon">+</span></button><div class="faq-a">No. There is no obligation to book. If none of the shortlisted venues feel right, reach out and we can discuss next steps.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Do you only work with Toronto venues? <span class="faq-icon">+</span></button><div class="faq-a">Not at all. Our team has relationships with venues across Canada, the United States, and internationally &mdash; including Italy, Switzerland, Mexico, South Korea, and more. Whether you want a Toronto ballroom or a hillside villa in Tuscany, we can help.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">What information do I need for the questionnaire? <span class="faq-icon">+</span></button><div class="faq-a">Wedding date or approximate timeframe, estimated guest count, total venue budget, preferred style, preferred location, and any specific requirements such as halal catering, outdoor ceremony space, or parking.</div></div>
+    <div class="faq-item reveal"><button class="faq-q">Is the $99 refundable? <span class="faq-icon">+</span></button><div class="faq-a">The $99 is non-refundable once we have started work. However, if our negotiated savings do not exceed $99 in value, we will refund the shortfall. Our guarantee always applies.</div></div>
+    <div style="margin-top:4rem;text-align:center" class="reveal"><p class="tag" style="margin-bottom:1.2rem">Still have questions?</p><button class="btn-dark" id="faq-contact">Contact Us</button></div>
   </div>
-  <footer class="footer-light">
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-      <li><a onclick="goto('contact')">Contact</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <footer class="foot"><span class="foot-logo" id="fl3-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl3-how">How It Works</button></li><li><button id="fl3-venues">Venues</button></li><li><button id="fl3-faq">FAQ</button></li><li><button id="fl3-about">About</button></li><li><button id="fl3-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <!-- ABOUT -->
 <div class="page" id="page-about">
-  <div class="about-hero">
-    <p class="section-tag">About Us</p>
-    <h1 class="section-title" style="color:var(--cream)">A team that knows<br><em>every room in the city</em></h1>
-    <p class="section-body">15+ years of North American wedding expertise, working entirely on your behalf.</p>
-  </div>
+  <div class="about-hero"><p class="tag">About Us</p><h1 class="heading" style="color:var(--cream)">10+ years of venue relationships,<br><em>across the globe</em></h1><p class="btext">From Toronto to Italy, Switzerland, Mexico, South Korea and beyond &mdash; we have the connections to find and negotiate your dream venue, wherever it is.</p></div>
   <div class="about-body">
     <div class="about-split reveal">
-      <div class="about-img-placeholder">[ Team photo / wedding photo ]</div>
+      <div class="about-img">[ Team photo ]</div>
       <div class="about-content">
-        <p class="section-tag">Our Story</p>
-        <h2 class="section-title" style="font-size:2rem;margin-bottom:1rem">Fleur Weddings,<br><em>behind the scenes</em></h2>
-        <p>VenueConsultant.ca is the venue-access platform built by the Fleur Weddings team — a collective of senior wedding planners with over 15 years of experience across North America.</p>
-        <p>Over that time, we have planned hundreds of weddings and built genuine, lasting relationships with the managers and owners of Toronto's finest venues. We know their spaces inside out, we understand their availability, and they trust us implicitly.</p>
-        <p>That trust is what we pass on to you. When you connect with a venue through our platform, you are not a stranger walking through the door — you are a Fleur Weddings couple, and that means something.</p>
+        <p class="tag">Who We Are</p>
+        <h2 class="heading" style="font-size:2rem;margin-bottom:1rem">Planners who know<br><em>every room in the city</em></h2>
+        <p>VenueConsultant.ca was built by a team of wedding planning professionals with 10+ years of hands-on experience across Canada, the United States, and internationally.</p>
+        <p>Over that time we have built genuine, trusted relationships with venue managers, owners, and coordinators not just in Toronto &mdash; but across North America and worldwide, including Italy, Switzerland, Mexico, South Korea, and more.</p>
+        <p>We built this platform because we saw how much time and stress couples waste trying to research and contact venues on their own. We can do in 2 weeks what takes most couples 3 months &mdash; and get a better result.</p>
       </div>
     </div>
     <div class="stat-row reveal">
-      <div class="stat-box">
-        <p class="stat-num">15+</p>
-        <p class="stat-label">Years of Experience</p>
-      </div>
-      <div class="stat-box">
-        <p class="stat-num">10%</p>
-        <p class="stat-label">Guaranteed Discount</p>
-      </div>
-      <div class="stat-box">
-        <p class="stat-num">$0</p>
-        <p class="stat-label">Cost to Couples</p>
-      </div>
+      <div class="stat-box"><p class="stat-num">10+</p><p class="stat-lbl">Years Experience</p></div>
+      <div class="stat-box"><p class="stat-num">30+</p><p class="stat-lbl">Venues Per Search</p></div>
+      <div class="stat-box"><p class="stat-num">Global</p><p class="stat-lbl">CA &middot; US &middot; EU &middot; Asia</p></div>
     </div>
-    <div class="about-fleur reveal">
-      <div class="about-fleur-icon">F</div>
-      <div class="about-fleur-text">
-        <h3>Powered by Fleur Weddings</h3>
-        <p>Fleur Weddings is a full-service North American wedding planning company with deep roots in the Toronto wedding community. Our planners have worked across Canada and the United States, earning the trust of couples, venues, and vendors alike. VenueConsultant.ca is our way of making that access available to every couple — not just those who hire a full planner.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:5rem;" class="reveal">
-      <button class="btn-primary" onclick="goto('contact')">Work With Us</button>
-    </div>
+    <div class="about-note reveal"><h3>Toronto to Tokyo &mdash; we know the rooms</h3><p>Our network spans Toronto and the GTA, across Canada and the US, and extends internationally to Italy, Switzerland, Mexico, South Korea, and beyond. Wherever you want to get married, we reach out as the experienced consultants we are &mdash; venues respond to us because they know us.</p></div>
+    <div style="text-align:center;margin-top:5rem" class="reveal"><button class="btn-dark" id="about-start">Work With Us</button></div>
   </div>
-  <footer class="footer-light">
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-      <li><a onclick="goto('contact')">Contact</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <footer class="foot"><span class="foot-logo" id="fl4-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl4-how">How It Works</button></li><li><button id="fl4-venues">Venues</button></li><li><button id="fl4-faq">FAQ</button></li><li><button id="fl4-about">About</button></li><li><button id="fl4-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <!-- CONTACT -->
 <div class="page" id="page-contact">
   <div class="contact-inner">
-    <p class="section-tag">Get Started</p>
-    <h1 class="section-title">Ready to find your<br><em>perfect venue?</em></h1>
-    <p class="section-body">Registration is free. Reach out below and we will be in touch within 24 hours to walk you through the platform and your options.</p>
-    <div class="contact-methods">
-      <div class="contact-method">
-        <span class="contact-method-label">Email</span>
-        <a href="mailto:info@fleurweddings.ca">info@fleurweddings.ca</a>
-      </div>
-      <div class="contact-method">
-        <span class="contact-method-label">Phone / WhatsApp</span>
-        <a href="tel:6472709573">647-270-9573</a>
+    <p class="tag">Get Started</p>
+    <h1 class="heading">Create your free account</h1>
+    <p class="btext">Registration is free and takes 30 seconds. Once registered, you can browse venues, ask questions, and submit your questionnaire when ready.</p>
+    <div class="reg-box">
+      <h3>Free Registration</h3>
+      <p>Email and phone number only. No password required to start.</p>
+      <div class="reg-form">
+        <input type="text" placeholder="Full name" id="reg-name"/>
+        <input type="email" placeholder="Email address" id="reg-email"/>
+        <input type="tel" placeholder="Phone number" id="reg-phone"/>
+        <button class="btn-gold" id="reg-submit">Create Free Account</button>
       </div>
     </div>
-    <div class="contact-divider"></div>
-    <p class="contact-form-label">Or send us a message</p>
-    <div class="contact-form">
-      <input type="text" placeholder="Your name" id="cf-name" />
-      <input type="email" placeholder="Email address" id="cf-email" />
-      <input type="tel" placeholder="Phone number (optional)" id="cf-phone" />
-      <textarea placeholder="Tell us about your wedding — date, guest count, style..." id="cf-msg"></textarea>
-      <button class="btn-gold" onclick="submitForm(this)">Send Message</button>
+    <div style="margin-top:3rem">
+      <div class="contact-methods">
+        <div class="contact-method"><span class="cm-label">Email</span><a href="/cdn-cgi/l/email-protection#731a1d151c33151f160601041617171a1d14005d1012" class="cm-link"><span class="__cf_email__" data-cfemail="ec85828a83ac8a8089999e9b89888885828b9fc28f8d">[email&#160;protected]</span></a></div>
+        <div class="contact-method"><span class="cm-label">Phone / WhatsApp</span><a href="tel:6472709573" class="cm-link">647-270-9573</a></div>
+      </div>
     </div>
   </div>
-  <footer>
-    <span class="footer-logo" onclick="goto('home')">Venue<span>Consultant</span>.ca</span>
-    <ul class="footer-links">
-      <li><a onclick="goto('how')">How It Works</a></li>
-      <li><a onclick="goto('venues')">Venues</a></li>
-      <li><a onclick="goto('faq')">FAQ</a></li>
-      <li><a onclick="goto('about')">About</a></li>
-    </ul>
-    <p class="footer-copy">&copy; 2025 VenueConsultant.ca &middot; Powered by Fleur Weddings</p>
-  </footer>
+  <footer class="foot"><span class="foot-logo" id="fl5-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl5-how">How It Works</button></li><li><button id="fl5-venues">Venues</button></li><li><button id="fl5-faq">FAQ</button></li><li><button id="fl5-about">About</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
+</div>
+
+<!-- QUESTIONNAIRE (multi-step quiz) -->
+<div class="page" id="page-questionnaire">
+<style>
+/* ── Quiz styles scoped inside questionnaire page ── */
+.qz-progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(59,42,26,.1);z-index:300}
+.qz-progress-fill{height:100%;background:var(--gold);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.qz-phase{display:none;min-height:100vh;flex-direction:column}
+.qz-phase.active{display:flex}
+/* Intro */
+.qz-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:3rem 2rem;text-align:center}
+.qz-eye{font-size:11px;font-weight:500;letter-spacing:.18em;color:var(--gold);margin-bottom:1.5rem;text-transform:uppercase;font-family:var(--sans)}
+.qz-h1{font-family:var(--serif);font-size:clamp(2.8rem,7vw,5rem);font-weight:300;line-height:1.1;color:var(--brown);margin-bottom:1rem;max-width:700px}
+.qz-h1 em{font-style:italic;color:var(--gold)}
+.qz-sub{font-size:16px;color:var(--brown-mid);max-width:460px;margin:0 auto 2.5rem;line-height:1.7}
+.qz-meta{font-size:12px;color:rgba(59,42,26,.35);margin-top:1.5rem}
+.qz-btn{background:var(--brown);color:var(--cream);border:none;padding:15px 40px;border-radius:40px;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s}
+.qz-btn:hover{background:var(--brown-mid);transform:translateY(-1px)}
+.qz-ghost{background:transparent;color:var(--brown-mid);border:1px solid rgba(59,42,26,.25);padding:13px 28px;border-radius:40px;font-family:var(--sans);font-size:13px;cursor:pointer;transition:border-color .2s,color .2s}
+.qz-ghost:hover{border-color:var(--brown-mid);color:var(--brown)}
+/* Swipe */
+.qz-swipe{display:flex;flex-direction:column;min-height:100vh;padding:4rem 1.5rem 2rem;max-width:600px;margin:0 auto;width:100%}
+.qz-dots{display:flex;gap:6px;margin-bottom:2rem}
+.qz-dot{height:3px;flex:1;border-radius:2px;background:rgba(59,42,26,.1);transition:background .3s}
+.qz-dot.done{background:var(--gold)}
+.qz-dot.active{background:var(--brown)}
+.qz-qlabel{font-size:11px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:6px;font-family:var(--sans)}
+.qz-qtext{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:300;line-height:1.25;margin-bottom:2rem;color:var(--brown)}
+.qz-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;flex:1}
+.qz-card{border:1px solid rgba(59,42,26,.1);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;background:white;position:relative}
+.qz-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.qz-card.selected{border:2px solid var(--brown);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.qz-card.fade-out{opacity:.3;transform:scale(.97);transition:all .25s}
+.qz-cimg{height:130px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(145deg,#f5efe4,#ede3d0)}
+.qz-cbody{padding:14px}
+.qz-clabel{font-family:var(--serif);font-size:17px;font-weight:400;margin-bottom:4px;color:var(--brown)}
+.qz-cdesc{font-size:12px;color:var(--brown-mid);line-height:1.4}
+.qz-skip{text-align:center;font-size:12px;color:rgba(59,42,26,.35)}
+.qz-skip button{background:none;border:none;color:var(--brown-mid);font-size:12px;cursor:pointer;text-decoration:underline;font-family:var(--sans)}
+/* Details */
+.qz-details{max-width:580px;margin:0 auto;width:100%;padding:4rem 1.5rem}
+.qz-dhead{margin-bottom:2.5rem}
+.qz-deye{font-size:11px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:8px;font-family:var(--sans)}
+.qz-dtitle{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:300;line-height:1.2;color:var(--brown)}
+.qz-section{margin-bottom:2rem}
+.qz-slabel{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--brown-mid);margin-bottom:12px;font-family:var(--sans)}
+.qz-chips{display:flex;flex-wrap:wrap;gap:8px}
+.qz-chip{padding:9px 18px;border:1px solid rgba(59,42,26,.1);border-radius:40px;font-size:13px;cursor:pointer;color:var(--brown-mid);background:white;transition:all .15s;white-space:nowrap;font-family:var(--sans)}
+.qz-chip:hover{border-color:rgba(59,42,26,.3);color:var(--brown)}
+.qz-chip.on{border-color:var(--brown);background:var(--brown);color:var(--cream);font-weight:500}
+.qz-slider-wrap{margin-bottom:.5rem}
+.qz-readout{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--brown);margin-bottom:12px}
+.qz-slider-sub{font-size:12px;color:rgba(59,42,26,.35)}
+.qz-range{-webkit-appearance:none;width:100%;height:2px;background:linear-gradient(to right,var(--brown) 0%,rgba(59,42,26,.1) 0%);border-radius:1px;outline:none;cursor:pointer;margin:1rem 0}
+.qz-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--brown);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.qz-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--brown);cursor:pointer;border:none}
+.qz-submit{width:100%;padding:18px;background:var(--brown);color:var(--cream);border:none;border-radius:40px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer;letter-spacing:.03em;transition:background .2s,transform .15s;margin-top:1rem}
+.qz-submit:hover{background:var(--brown-mid);transform:translateY(-1px)}
+.qz-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* Loading */
+.qz-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:1.5rem}
+.qz-ltitle{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--brown)}
+.qz-ldots{display:flex;gap:8px}
+.qz-ldot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:qzpulse 1.4s ease-in-out infinite}
+.qz-ldot:nth-child(2){animation-delay:.2s}
+.qz-ldot:nth-child(3){animation-delay:.4s}
+@keyframes qzpulse{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+/* Results */
+.qz-results{max-width:680px;margin:0 auto;width:100%;padding:4rem 1.5rem 6rem}
+.qz-rhead{margin-bottom:2rem}
+.qz-reye{font-size:11px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:8px;font-family:var(--sans)}
+.qz-rtitle{font-family:var(--serif);font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.2;color:var(--brown)}
+.qz-rsub{font-size:13px;color:var(--brown-mid)}
+.qz-pstrip{display:flex;flex-wrap:wrap;gap:6px;margin:1.25rem 0 2rem}
+.qz-ppill{padding:5px 12px;border:1px solid rgba(59,42,26,.1);border-radius:20px;font-size:12px;color:var(--brown-mid);background:white}
+.qz-ppill.key{border-color:var(--gold);color:var(--brown);background:rgba(184,154,90,.12)}
+.qz-rcard{background:white;border:1px solid rgba(59,42,26,.08);border-radius:12px;padding:22px 24px;margin-bottom:12px;animation:qzfadeup .4s ease both}
+.qz-rcard:hover{border-color:rgba(59,42,26,.2);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.qz-rcard.top{border:1.5px solid var(--gold);background:#FFFDF9}
+@keyframes qzfadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.qz-topl{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:white;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.qz-rhead2{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.qz-rrank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;border:1px solid rgba(59,42,26,.1);color:var(--brown-mid);font-family:var(--sans)}
+.qz-rrank.g{background:var(--gold);border-color:var(--gold);color:white}
+.qz-rname{font-family:var(--serif);font-size:1.25rem;font-weight:400;line-height:1.2;color:var(--brown)}
+.qz-rstyle{font-size:12px;color:var(--brown-mid);margin-top:2px}
+.qz-rscore{text-align:right;flex-shrink:0}
+.qz-rsnum{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--brown)}
+.qz-rslbl{font-size:10px;letter-spacing:.08em;color:rgba(59,42,26,.3);text-transform:uppercase;font-family:var(--sans)}
+.qz-bar{height:2px;background:rgba(59,42,26,.08);border-radius:1px;margin-bottom:14px}
+.qz-barfill{height:100%;border-radius:1px;background:var(--gold);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.qz-rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.qz-rmlbl{font-size:11px;color:rgba(59,42,26,.3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;font-family:var(--sans)}
+.qz-rmval{font-size:14px;font-weight:500;color:var(--brown);font-family:var(--sans)}
+.qz-rtags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.qz-rtag{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;font-family:var(--sans)}
+.qz-rtag.pos{background:rgba(122,158,126,.12);color:#3d6b41}
+.qz-rtag.warn{background:rgba(184,154,90,.12);color:var(--brown-mid)}
+.qz-rfooter{display:flex;justify-content:space-between;align-items:center}
+.qz-rpkg{font-size:12px;color:rgba(59,42,26,.3);font-family:var(--sans)}
+.qz-rbtn{padding:8px 18px;border:1px solid rgba(59,42,26,.1);border-radius:40px;background:transparent;font-size:12px;color:var(--brown-mid);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.qz-rbtn:hover{border-color:var(--brown);color:var(--brown)}
+.qz-rbtn.p{background:var(--brown);color:var(--cream);border-color:var(--brown)}
+.qz-rbtn.p:hover{background:var(--brown-mid)}
+.qz-morebtn{width:100%;padding:14px;background:transparent;border:1px solid rgba(59,42,26,.1);border-radius:40px;font-family:var(--sans);font-size:13px;color:var(--brown-mid);cursor:pointer;margin-top:8px;transition:all .2s}
+.qz-morebtn:hover{border-color:rgba(59,42,26,.3);color:var(--brown);background:white}
+.qz-hidden{display:none!important}
+.qz-rfooterbar{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(59,42,26,.08);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.qz-restart{padding:10px 22px;border:1px solid rgba(59,42,26,.1);border-radius:40px;background:transparent;font-size:13px;color:var(--brown-mid);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.qz-restart:hover{border-color:rgba(59,42,26,.3);color:var(--brown)}
+.qz-fnote{font-size:11px;color:rgba(59,42,26,.3);max-width:340px;line-height:1.5;font-family:var(--sans)}
+/* Payment CTA after results */
+.qz-pay-cta{background:var(--brown);color:var(--cream);border-radius:16px;padding:2rem 2.5rem;margin-top:2rem;text-align:center}
+.qz-pay-cta h3{font-family:var(--serif);font-size:1.6rem;font-weight:300;margin-bottom:.5rem}
+.qz-pay-cta p{font-size:.85rem;color:var(--cream-dark);margin-bottom:1.5rem;line-height:1.7}
+.qz-pay-price{display:inline-flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.qz-pay-old{font-family:var(--serif);font-size:1rem;color:rgba(245,239,228,.4);text-decoration:line-through}
+.qz-pay-now{font-family:var(--serif);font-size:2rem;font-style:italic;color:var(--gold)}
+@media(max-width:480px){.qz-pair{grid-template-columns:1fr 1fr}.qz-cimg{height:100px;font-size:38px}.qz-rgrid{grid-template-columns:1fr 1fr}}
+</style>
+
+<div class="qz-progress-track"><div class="qz-progress-fill" id="qz-progress" style="width:0%"></div></div>
+
+<!-- INTRO -->
+<div class="qz-phase active" id="qzph-intro">
+  <div class="qz-intro">
+    <div class="qz-eye">Find Your Perfect Venue &middot; Toronto &amp; GTA</div>
+    <h1 class="qz-h1">Find your <em>perfect</em><br>wedding venue</h1>
+    <p class="qz-sub">Answer a few quick questions about your style and priorities — we'll match you with the venues from our database that are truly right for you.</p>
+    <button class="qz-btn" id="qz-begin-btn">Begin matching &rarr;</button>
+    <p class="qz-meta">5 style questions &middot; 3 details &middot; ~2 minutes</p>
+  </div>
+</div>
+
+<!-- SWIPE -->
+<div class="qz-phase" id="qzph-swipe">
+  <div class="qz-swipe">
+    <div class="qz-dots" id="qz-dots"></div>
+    <div class="qz-qlabel" id="qz-qlabel"></div>
+    <div class="qz-qtext" id="qz-qtext"></div>
+    <div class="qz-pair" id="qz-pair"></div>
+    <div class="qz-skip"><button id="qz-skip-btn">Skip this question</button></div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<div class="qz-phase" id="qzph-details">
+  <div class="qz-details">
+    <div class="qz-dhead">
+      <div class="qz-deye">Almost there</div>
+      <h2 class="qz-dtitle">A few quick details</h2>
+    </div>
+    <div class="qz-section">
+      <div class="qz-slabel">How many guests?</div>
+      <div class="qz-slider-wrap">
+        <div class="qz-readout" id="qz-guest-display">120 guests</div>
+        <input class="qz-range" type="range" id="qz-guest-slider" min="20" max="500" step="10" value="120"/>
+        <div class="qz-slider-sub">Drag to adjust</div>
+      </div>
+    </div>
+    <div class="qz-section">
+      <div class="qz-slabel">Budget per person (venue + food + bar)</div>
+      <div class="qz-chips" id="qz-budget-chips">
+        <div class="qz-chip" data-val="budget-low">Under $80</div>
+        <div class="qz-chip" data-val="budget-mid">$80 &ndash; $150</div>
+        <div class="qz-chip" data-val="budget-prem">$150 &ndash; $250</div>
+        <div class="qz-chip" data-val="budget-lux">$250+</div>
+      </div>
+    </div>
+    <div class="qz-section">
+      <div class="qz-slabel">Catering preference</div>
+      <div class="qz-chips">
+        <div class="qz-chip" data-val="cat-onsite">Venue handles catering</div>
+        <div class="qz-chip" data-val="cat-outside">Bring our own caterer</div>
+        <div class="qz-chip" data-val="cat-halal">Halal required</div>
+        <div class="qz-chip" data-val="cat-kosher">Kosher required</div>
+      </div>
+    </div>
+    <div class="qz-section">
+      <div class="qz-slabel">Must-haves (select all that apply)</div>
+      <div class="qz-chips">
+        <div class="qz-chip" data-val="mh-outdoor">Outdoor ceremony space</div>
+        <div class="qz-chip" data-val="mh-parking">Free parking</div>
+        <div class="qz-chip" data-val="mh-dance">Dance floor</div>
+        <div class="qz-chip" data-val="mh-wheelchair">Wheelchair accessible</div>
+        <div class="qz-chip" data-val="mh-view">Stunning view</div>
+        <div class="qz-chip" data-val="mh-airport">Near airport</div>
+      </div>
+    </div>
+    <div class="qz-section">
+      <div class="qz-slabel">Preferred area</div>
+      <div class="qz-chips">
+        <div class="qz-chip" data-val="loc-downtown">Downtown Toronto</div>
+        <div class="qz-chip" data-val="loc-midtown">Midtown / North Toronto</div>
+        <div class="qz-chip" data-val="loc-east">East Toronto</div>
+        <div class="qz-chip" data-val="loc-west">Mississauga / Brampton</div>
+        <div class="qz-chip" data-val="loc-north">Vaughan / Markham</div>
+        <div class="qz-chip" data-val="loc-rural">GTA countryside</div>
+        <div class="qz-chip" data-val="loc-any">Anywhere within 1hr</div>
+      </div>
+    </div>
+    <button class="qz-submit" id="qz-find-btn">Find my venues &rarr;</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="qz-phase" id="qzph-loading">
+  <div class="qz-loading">
+    <div class="qz-ltitle">Searching 250 venues&hellip;</div>
+    <div class="qz-ldots"><div class="qz-ldot"></div><div class="qz-ldot"></div><div class="qz-ldot"></div></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="qz-phase" id="qzph-results">
+  <div class="qz-results">
+    <div class="qz-rhead">
+      <div class="qz-reye">Your matches</div>
+      <h2 class="qz-rtitle">Here are your <em style="font-style:italic;color:var(--gold)">top venues</em></h2>
+      <p class="qz-rsub" id="qz-results-sub"></p>
+      <div class="qz-pstrip" id="qz-profile-strip"></div>
+    </div>
+    <div id="qz-results-list"></div>
+    <button class="qz-morebtn qz-hidden" id="qz-more-btn">Show more results</button>
+
+    <!-- Payment CTA -->
+    <div class="qz-pay-cta" id="qz-pay-cta">
+      <h3>Love what you see? Let us negotiate for you.</h3>
+      <p>We'll contact 30+ venues, shortlist the best 5, and negotiate your top 2 picks. Guaranteed value worth more than you pay.</p>
+      <div class="qz-pay-price">
+        <span class="qz-pay-old">$299</span>
+        <span class="qz-pay-now">$99</span>
+      </div>
+      <button class="qz-btn" id="qz-pay-btn">Get Started &mdash; $99 &rarr;</button>
+    </div>
+
+    <div class="qz-rfooterbar">
+      <button class="qz-restart" id="qz-restart-btn">&larr; Start over</button>
+      <p class="qz-fnote">Scores based on capacity, budget, style, location and must-haves. Data from EventSource.ca &amp; WeddingWire.ca.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="foot"><span class="foot-logo" id="fl6-home">Venue<span>Consultant</span>.ca</span><ul class="foot-links"><li><button id="fl6-how">How It Works</button></li><li><button id="fl6-faq">FAQ</button></li><li><button id="fl6-contact">Contact</button></li></ul><p class="foot-copy">&copy; 2025 VenueConsultant.ca</p></footer>
 </div>
 
 <script>
+window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet Hall", "style": "Banquet Hall", "area": "North York", "cap": 350, "stand": 500, "cat": "On-Site Only", "price": "$45-$145/pp", "rating": 4.9, "reviews": 92, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 2, "url": "https://www.eventsource.ca/casa-ricca-banquet-hall"}, {"id": 2, "n": "Old Mill Toronto", "type": "Special Event Venue", "style": "Banquet Hall / Historic", "area": "Etobicoke", "cap": 450, "stand": 720, "cat": "On-Site Only", "price": "From $75/pp", "rating": 4.8, "reviews": 73, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (inquire)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 6, "url": "https://www.eventsource.ca/old-mill-toronto"}, {"id": 5, "n": "The Arlington Estate", "type": "Special Event Venue / Estate", "style": "Mansion / Estate", "area": "Vaughan (Kleinburg)", "cap": 475, "stand": 700, "cat": "/", "price": "$210-$500/pp", "rating": 4.9, "reviews": 32, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Estate view", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/the-arlington-estate"}, {"id": 15, "n": "Richmond Hill Country Club", "type": "Golf & Country Club", "style": "Golf & Country Club", "area": "Richmond Hill", "cap": 230, "stand": 300, "cat": "On-Site Only", "price": "$145-$225/pp", "rating": 5.0, "reviews": 124, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Golf course", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/richmond-hill-country-club"}, {"id": 18, "n": "The Albany Club", "type": "Special Event Venue (Historic Club)", "style": "Special Event Venue (Historic Club)", "area": "Toronto", "cap": 150, "stand": 200, "cat": "On-Site Only", "price": "$150-$250/pp", "rating": 5.0, "reviews": 32, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Historic bldg", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/the-albany-club"}, {"id": 24, "n": "Harding Waterfront Estate", "type": "Special Event Venue (Waterfront Estate)", "style": "Mansion / Waterfront Estate", "area": "Oakville", "cap": 200, "stand": 275, "cat": "Preferred Caterers", "price": "Inquire for pricing", "rating": 0.0, "reviews": 0, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake view", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/harding-waterfront-estate"}, {"id": 32, "n": "St. George's Golf and Country Club", "type": "Golf & Country Club", "style": "Golf & Country Club", "area": "Etobicoke", "cap": 180, "stand": 250, "cat": "On-Site Only", "price": "$80-$215/pp", "rating": 5.0, "reviews": 10, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Golf course", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/st-georges-golf-and-country-club"}, {"id": 33, "n": "The National Club", "type": "Historic Venue (Historic Club)", "style": "Mansion / Historic Club", "area": "Toronto", "cap": 150, "stand": 350, "cat": "On-Site Only", "price": "$150-$300/pp", "rating": 5.0, "reviews": 10, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Historic bldg", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/the-national-club"}, {"id": 43, "n": "Malaparte", "type": "Special Event Venue", "style": "Special Event Venue / Rooftop", "area": "Toronto", "cap": 150, "stand": 350, "cat": "On-Site Only", "price": "$250-$350/pp", "rating": 5.0, "reviews": 3, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Rooftop city view", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/malaparte"}, {"id": 44, "n": "The Symes", "type": "Special Event Venue", "style": "Special Event Venue / Industrial", "area": "Toronto", "cap": 400, "stand": 750, "cat": "Outside Only", "price": "$250-$300/pp", "rating": 5.0, "reviews": 3, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes (inquire)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/the-symes"}, {"id": 95, "n": "Borgata Event Centre by Avani", "type": "Banquet Hall", "style": "Banquet Hall", "area": "Concord", "cap": 0, "stand": 0, "cat": "On-Site Only", "price": "$70-$130/pp", "rating": 5.0, "reviews": 48, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/borgata-event-centre-by-avani"}, {"id": 107, "n": "Bellamy Loft", "type": "Loft & Studio Space", "style": "Loft & Studio", "area": "North York", "cap": 0, "stand": 0, "cat": "On-Site Only", "price": "$95-$200/pp", "rating": 5.0, "reviews": 22, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 1, "url": "https://www.eventsource.ca/bellamy-loft"}, {"id": 161, "n": "The Guild Inn Estate", "type": "Banquet Hall / Historic Estate", "style": "Banquet Hall / Historic", "area": "Scarborough", "cap": 1000, "stand": 1000, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 349, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Historic grounds", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/the-guild-inn-estate--e10722"}, {"id": 162, "n": "Liberty Grand Entertainment Complex", "type": "Banquet Hall / Historic", "style": "Banquet Hall / Historic", "area": "Toronto", "cap": 2000, "stand": 2000, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.8, "reviews": 80, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes (paid)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake Ontario view", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 4, "url": "https://www.weddingwire.ca/wedding-banquet-halls/liberty-grand-entertainment-complex--e6425"}, {"id": 163, "n": "Casa Loma", "type": "Castle", "style": "Castle", "area": "Toronto", "cap": 450, "stand": 450, "cat": "Preferred Caterers", "price": "Inquire for pricing", "rating": 4.3, "reviews": 35, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes (paid)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Castle / city skyline", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 6, "url": "https://www.weddingwire.ca/castle-wedding/casa-loma--e1728"}, {"id": 164, "n": "The Eglinton Grand", "type": "Mansion / Historic Ballroom", "style": "Mansion / Historic", "area": "Toronto", "cap": 420, "stand": 420, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 159, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "Yes Art Deco ballroom", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/the-eglinton-grand--e1256"}, {"id": 165, "n": "The Royal Ambassador", "type": "Park / Estate", "style": "Park / Estate", "area": "Caledon", "cap": 600, "stand": 600, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.6, "reviews": 91, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes 20-acre lake / rolling hills", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/park-weddings/the-royal-ambassador--e9717"}, {"id": 167, "n": "Graydon Hall Manor", "type": "Mansion / Estate", "style": "Mansion / Estate", "area": "Toronto (Don Mills)", "cap": 240, "stand": 240, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.5, "reviews": 35, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Formal gardens", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 9, "url": "https://www.weddingwire.ca/mansion-weddings/graydon-hall-manor--e9504"}, {"id": 168, "n": "Eaton Hall Country Inn and Spa", "type": "Mansion / Country Inn", "style": "Mansion / Estate", "area": "King City", "cap": 250, "stand": 250, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 35, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake Seneca view", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/mansion-weddings/eaton-hall-country-inn-and-spa--e63139"}, {"id": 170, "n": "Cambridge Mill", "type": "Restaurant / Historic Mill", "style": "Restaurant / Historic Mill", "area": "Cambridge", "cap": 180, "stand": 180, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 189, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Waterfall / mill", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/restaurant-weddings/cambridge-mill--e5746"}, {"id": 173, "n": "Aga Khan Museum", "type": "Gallery / Museum", "style": "Gallery / Museum", "area": "Toronto", "cap": 250, "stand": 250, "cat": "Preferred Caterers", "price": "Inquire for pricing", "rating": 4.7, "reviews": 23, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes (paid nearby)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Reflecting pools / gardens", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/aga-khan-museum--e16716"}, {"id": 177, "n": "Fantasy Farm Event Centre", "type": "Banquet Hall / Farm", "style": "Banquet Hall / Farm", "area": "Toronto (Don Valley)", "cap": 220, "stand": 220, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 83, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Don Valley Conservation", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/fantasy-farm-event-centre--e5539"}, {"id": 178, "n": "The Manor (Carrying Place)", "type": "Mansion / Golf Estate", "style": "Mansion / Golf Estate", "area": "King (north of Vaughan)", "cap": 420, "stand": 420, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 68, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Pond / golf course", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/the-manor--e5208"}, {"id": 179, "n": "Angus Glen Golf Club", "type": "Golf & Country Club / Mansion", "style": "Golf Club / Mansion", "area": "Markham", "cap": 600, "stand": 600, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 23, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes PGA golf course", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/mansion-weddings/angus-glen-golf-club--e8694"}, {"id": 181, "n": "Belcroft Estate & Event Centre", "type": "Farm / Estate", "style": "Farm / Estate", "area": "Gilford (50 min from Toronto)", "cap": 225, "stand": 225, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.8, "reviews": 36, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Garden tent / countryside", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/farm-weddings/belcroft-estate--e5084"}, {"id": 185, "n": "The Great Hall", "type": "Banquet Hall / Historic", "style": "Banquet Hall / Historic", "area": "Toronto", "cap": 220, "stand": 220, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 5.0, "reviews": 17, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "Yes Heritage restoration", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/the-great-hall--e1511"}, {"id": 186, "n": "Hazelton Manor", "type": "Banquet Hall / Manor", "style": "Banquet Hall / Manor", "area": "Vaughan", "cap": 600, "stand": 600, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 42, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "No", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/wedding-banquet-halls/hazelton-manor--e12627"}, {"id": 188, "n": "Erin Estate", "type": "Mansion / Estate", "style": "Mansion / Estate", "area": "Erin (30 min from GTA)", "cap": 160, "stand": 160, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 5.0, "reviews": 39, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Forest ceremony / luxury bridal suite", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/mansion-weddings/erin-estate--e15216"}, {"id": 191, "n": "Palais Royale", "type": "Mansion / Ballroom", "style": "Mansion / Ballroom", "area": "Toronto", "cap": 350, "stand": 350, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.9, "reviews": 39, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake Ontario / outdoor courtyard", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/mansion-weddings/palais-royale--e8736"}, {"id": 195, "n": "One King West", "type": "Hotel / Historic", "style": "Hotel / Historic", "area": "Toronto", "cap": 15, "stand": 300, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.8, "reviews": 100, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (street)", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "Yes Heritage bank building", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/hotel-weddings/one-king-west--e6460"}, {"id": 198, "n": "Elora Mill Hotel & Spa", "type": "Hotel / Historic Mill", "style": "Hotel / Historic Mill", "area": "Elora (1hr from Toronto)", "cap": 40, "stand": 200, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 5.0, "reviews": 102, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Gorge / river / 175yr old mill", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/hotel-weddings/elora-mill-hotel--e17094"}, {"id": 204, "n": "The Omni King Edward Hotel", "type": "Hotel / Historic", "style": "Hotel / Historic", "area": "Toronto", "cap": 100, "stand": 270, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 4.8, "reviews": 24, "ceremony": "Yes", "wheelchair": "Yes", "parking": "No (paid)", "av": "Yes", "wifi": "Yes", "outdoor": "No", "view": "Yes 1903 heritage hotel", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/hotel-weddings/the-omni-king-edward-hotel--e1634"}, {"id": 221, "n": "Spencer's at The Waterfront", "type": "Restaurant / Waterfront", "style": "Restaurant / Waterfront", "area": "Burlington", "cap": 50, "stand": 120, "cat": "On-Site Only", "price": "Inquire for pricing", "rating": 5.0, "reviews": 88, "ceremony": "No", "wheelchair": "Yes", "parking": "Yes Free", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake Ontario waterfront", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 0, "url": "https://www.weddingwire.ca/restaurant-weddings/spencers-at-the-waterfront--e11569"}, {"id": 246, "n": "Hotel X Toronto", "type": "Hotel / Special Event Venue", "style": "Hotel / Luxury", "area": "Toronto (Exhibition Place area)", "cap": 300, "stand": 500, "cat": "On-Site Only", "price": "$260-$310/pp", "rating": 0.0, "reviews": 0, "ceremony": "Yes", "wheelchair": "Yes", "parking": "Yes (valet)", "av": "Yes", "wifi": "Yes", "outdoor": "Yes", "view": "Yes Lake Ontario / city skyline", "airport": "No", "kosher": "Yes", "halal": "Yes", "dance": "Yes", "pkgs": 7, "url": "https://www.hotelxtoronto.com"}];
+
+(function(){
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxvihC6A6EEnOLTBrTsP_aMFaYypU2L4Vc_-SehCjeFVLUJvMSiFmZ9aNWG619P_yUSMg/exec';
+  var registeredUser = {name:'',email:'',phone:''};
+
+  var venues = [
+    {name:'Casa Loma',loc:'Midtown Toronto',desc:'A magnificent Gothic Revival castle with grand ballrooms and sprawling terraced gardens. Toronto\'s most iconic wedding backdrop.',tags:['Castle','Garden','Ballroom','Up to 500 guests'],faqs:[{q:'Is outdoor ceremony space available?',a:'Yes, Casa Loma has multiple outdoor terrace areas suitable for ceremonies. Availability depends on season and other bookings.'},{q:'Do they have on-site catering?',a:'Casa Loma works with a list of approved caterers. Halal and kosher options are available through specific caterers.'}]},
+    {name:'The Eglinton Grand',loc:'Midtown Toronto',desc:'A heritage landmark with Art Deco grandeur. Soaring ceilings, dramatic chandeliers, and timeless elegance in the heart of the city.',tags:['Heritage','Art Deco','Ballroom','Up to 350 guests'],faqs:[{q:'Is the venue exclusive for the day?',a:'The Eglinton Grand typically hosts one event at a time, so the venue is effectively yours for the duration of your booking.'}]},
+    {name:'Graydon Hall Manor',loc:'North York',desc:'A storybook English manor house set on lush private grounds. Old-world romance and intimate elegance just minutes from downtown.',tags:['Manor','Garden','Estate','Up to 250 guests'],faqs:[{q:'Can we have the ceremony on the grounds?',a:'Yes, Graydon Hall has a beautiful garden and terrace area perfect for outdoor ceremonies, with indoor backup spaces.'}]},
+    {name:'Angus Glen Golf Club',loc:'Markham',desc:'Championship golf course setting with a stunning clubhouse and panoramic fairway views. Refined event spaces for up to 300 guests.',tags:['Golf Club','Panoramic Views','Elegant','Up to 300 guests'],faqs:[]},
+    {name:'Aga Khan Museum',loc:'North York',desc:'An architectural masterpiece surrounded by geometric reflecting pools and gardens. World-class art and design as your backdrop.',tags:['Museum','Architecture','Modern','Up to 400 guests'],faqs:[{q:'Are there restrictions on decor or music?',a:'As a cultural institution, the Aga Khan Museum has guidelines around décor and sound levels. Our team can walk you through the specifics.'}]},
+    {name:'Many More Venues',loc:'Across the GTA & Worldwide',desc:'We work with dozens of partner venues across Toronto, the GTA, Canada, the US, and internationally. Register free to access our full directory.',tags:['Full list after registration'],faqs:[],isPlaceholder:true}
+  ];
+
   function goto(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
-      a.classList.toggle('active-link', a.dataset.page === page);
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+    var el = document.getElementById('page-'+page);
+    if(el) el.classList.add('active');
+    window.scrollTo(0,0);
+    document.querySelectorAll('.nav-links button').forEach(function(b){
+      b.classList.toggle('active-link', b.id==='nav-'+page);
     });
-    requestAnimationFrame(triggerReveals);
+    setTimeout(triggerReveals,50);
   }
 
   function triggerReveals() {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 70);
-          obs.unobserve(e.target);
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e,i){
+        if(e.isIntersecting){setTimeout(function(){e.target.classList.add('visible');},i*70);obs.unobserve(e.target);}
+      });
+    },{threshold:0.08});
+    document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(function(el){obs.observe(el);});
+  }
+
+  function buildVenueCards() {
+    var grid = document.getElementById('venues-grid');
+    if(!grid) return;
+    grid.innerHTML='';
+    venues.forEach(function(v,i){
+      var card = document.createElement('div');
+      card.className='venue-card reveal';
+      var fc = v.faqs?v.faqs.length:0;
+      if(v.isPlaceholder){
+        card.style.cssText='border-style:dashed;align-items:center;justify-content:center;text-align:center;';
+        card.innerHTML='<div class="vc-body" style="text-align:center"><p class="vc-name" style="color:var(--gold)">+ Many More</p><p class="vc-loc">Across the GTA &amp; Worldwide</p><p class="vc-desc" style="margin-top:.5rem">'+v.desc+'</p></div><div class="vc-foot"><span></span><button class="vc-ask" data-goto="contact">Register to View All</button></div>';
+      } else {
+        card.innerHTML='<div class="vc-body"><p class="vc-name">'+v.name+'</p><p class="vc-loc">'+v.loc+'</p><p class="vc-desc">'+v.desc+'</p></div><div class="vc-tags">'+v.tags.map(function(t){return'<span class="vc-tag">'+t+'</span>';}).join('')+'</div><div class="vc-foot"><span class="vc-faq-count">'+fc+' Q&amp;A answer'+(fc!==1?'s':'')+'</span><button class="vc-ask" data-modal="'+i+'">Ask a Question</button></div>';
+      }
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll('.vc-ask').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var g=btn.getAttribute('data-goto');
+        var m=btn.getAttribute('data-modal');
+        if(g) goto(g);
+        else if(m!==null) openModal(parseInt(m,10));
+      });
+    });
+  }
+
+  function openModal(idx){
+    var v=venues[idx];
+    document.getElementById('modal-name').textContent=v.name;
+    document.getElementById('modal-loc').textContent=v.loc;
+    var list=document.getElementById('modal-faq-list');
+    if(v.faqs&&v.faqs.length){
+      list.innerHTML=v.faqs.map(function(f){return'<div class="modal-faq-item"><p class="modal-faq-q">Q: '+f.q+'</p><p class="modal-faq-a">A: '+f.a+'</p></div>';}).join('');
+    } else {
+      list.innerHTML='<p style="font-size:.85rem;color:var(--brown-lt);font-style:italic">No questions yet &mdash; be the first to ask.</p>';
+    }
+    document.getElementById('venue-modal').classList.add('open');
+  }
+
+  function closeModal(){
+    document.getElementById('venue-modal').classList.remove('open');
+    ['ask-name','ask-email','ask-q'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  }
+
+  function bind(id,fn){var el=document.getElementById(id);if(el)el.addEventListener('click',fn);}
+
+  document.addEventListener('DOMContentLoaded',function(){
+    buildVenueCards();
+    triggerReveals();
+
+    /* nav */
+    bind('nav-logo',function(){goto('home');});
+    bind('nav-how',function(){goto('how');});
+    bind('nav-venues',function(){goto('venues');});
+    bind('nav-faq',function(){goto('faq');});
+    bind('nav-about',function(){goto('about');});
+    bind('nav-cta',function(){goto('contact');});
+
+    /* hamburger */
+    bind('hamburger-btn',function(){document.getElementById('mobile-menu').classList.add('open');});
+    bind('mob-close',function(){document.getElementById('mobile-menu').classList.remove('open');});
+    ['home','how','venues','faq','about','contact'].forEach(function(p){
+      bind('mob-'+p,function(){document.getElementById('mobile-menu').classList.remove('open');goto(p);});
+    });
+
+    /* home */
+    bind('home-start',function(){goto('contact');});
+    bind('home-how',function(){goto('how');});
+    bind('tab-how',function(){goto('how');});
+    bind('tab-venues',function(){goto('venues');});
+    bind('tab-about',function(){goto('about');});
+
+    /* how */
+    bind('how-start',function(){goto('contact');});
+    bind('how-q',function(){goto('questionnaire');});
+    bind('pricing-start',function(){goto('contact');});
+
+    /* faq accordion */
+    document.querySelectorAll('.faq-q').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var item=btn.parentElement;
+        var wasOpen=item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});
+        if(!wasOpen) item.classList.add('open');
+      });
+    });
+    bind('faq-contact',function(){goto('contact');});
+
+    /* about */
+    bind('about-start',function(){goto('contact');});
+
+    /* venues */
+    bind('venues-reg-btn',function(){goto('contact');});
+
+    /* modal */
+    bind('modal-x',closeModal);
+    document.getElementById('venue-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+    bind('ask-submit',function(){
+      var email=document.getElementById('ask-email').value;
+      var q=document.getElementById('ask-q').value;
+      if(!email.includes('@')||!q.trim()) return;
+      var btn=document.getElementById('ask-submit');
+      btn.textContent='Question Sent';
+      btn.style.background='var(--brown-lt)';
+      setTimeout(function(){btn.textContent='Submit Question';btn.style.background='';},4000);
+    });
+
+    /* registration */
+    bind('reg-submit',function(){
+      var name=document.getElementById('reg-name').value.trim();
+      var email=document.getElementById('reg-email').value.trim();
+      var phone=document.getElementById('reg-phone').value.trim();
+      var btn=document.getElementById('reg-submit');
+      if(!name){document.getElementById('reg-name').style.borderColor='rgba(200,80,80,.6)';return;}
+      if(!email.includes('@')){document.getElementById('reg-email').style.borderColor='rgba(200,80,80,.6)';return;}
+      if(!phone){document.getElementById('reg-phone').style.borderColor='rgba(200,80,80,.6)';return;}
+      registeredUser={name:name,email:email,phone:phone};
+      btn.textContent='Saving...';
+      btn.disabled=true;
+      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'registration',timestamp:new Date().toISOString(),name:name,email:email,phone:phone})})
+      .then(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);})
+      .catch(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);});
+    });
+
+    /* ── QUIZ (questionnaire page) ── */
+    var QZ = {
+      cur: 0, picks: [], guestCount: 120, budget: null,
+      chipVals: new Set(), allScored: [], shownCount: 5,
+      qs: [
+        {label:'VIBE CHECK',q:'Which setting speaks to you?',opts:[{icon:'🏰',label:'Grand & historic',desc:'Castles, estates, heritage buildings',tag:'historic'},{icon:'🌿',label:'Natural & organic',desc:'Gardens, farms, countryside',tag:'outdoor'}]},
+        {label:'DINNER FEEL',q:'How do you picture your reception dinner?',opts:[{icon:'🕯️',label:'Elegant seated dinner',desc:'Formal courses, white tablecloths',tag:'formal'},{icon:'🥂',label:'Relaxed & social',desc:'Stations, cocktail-style, mingling',tag:'casual'}]},
+        {label:'SETTING',q:'Indoors or outdoors — which feels like you?',opts:[{icon:'☀️',label:'Outdoors first',desc:'Ceremony & photos in open air',tag:'outdoor'},{icon:'✨',label:'Indoors & protected',desc:'Nothing left to the weather',tag:'indoor'}]},
+        {label:'BACKDROP',q:'Which photo backdrop excites you more?',opts:[{icon:'🏙️',label:'City skyline & lights',desc:'Rooftop, waterfront, modern',tag:'urban'},{icon:'🌸',label:'Lush gardens & fountains',desc:'Estate grounds, greenery',tag:'garden'}]},
+        {label:'ENERGY',q:'What energy do you want on your wedding night?',opts:[{icon:'🪩',label:'Big & celebratory',desc:'Large dance floor, full production',tag:'grand'},{icon:'🫧',label:'Intimate & curated',desc:'Every detail noticed, close circle',tag:'intimate'}]}
+      ]
+    };
+
+    function qzShow(id) {
+      document.querySelectorAll('.qz-phase').forEach(function(p){p.classList.remove('active');});
+      var el = document.getElementById('qzph-'+id);
+      if(el) el.classList.add('active');
+      window.scrollTo(0,0);
+    }
+    function qzProg(pct) { document.getElementById('qz-progress').style.width = pct+'%'; }
+
+    function qzRenderSwipe() {
+      var q = QZ.qs[QZ.cur];
+      var dots = '';
+      QZ.qs.forEach(function(_,i){ dots += '<div class="qz-dot'+(i<QZ.cur?' done':i===QZ.cur?' active':'')+'"></div>'; });
+      document.getElementById('qz-dots').innerHTML = dots;
+      document.getElementById('qz-qlabel').textContent = q.label;
+      document.getElementById('qz-qtext').textContent = q.q;
+      var area = document.getElementById('qz-pair');
+      area.innerHTML = q.opts.map(function(o,i){
+        return '<div class="qz-card" data-idx="'+i+'"><div class="qz-cimg">'+o.icon+'</div><div class="qz-cbody"><div class="qz-clabel">'+o.label+'</div><div class="qz-cdesc">'+o.desc+'</div></div></div>';
+      }).join('');
+      area.querySelectorAll('.qz-card').forEach(function(card){
+        card.addEventListener('click', function(){
+          var i = parseInt(card.getAttribute('data-idx'),10);
+          card.classList.add('selected');
+          var other = area.querySelector('.qz-card[data-idx="'+(1-i)+'"]');
+          if(other) other.classList.add('fade-out');
+          QZ.picks.push(QZ.qs[QZ.cur].opts[i].tag);
+          setTimeout(qzNextSwipe, 380);
+        });
+      });
+      qzProg(5 + (QZ.cur / QZ.qs.length) * 40);
+    }
+
+    function qzNextSwipe() {
+      QZ.cur++;
+      if(QZ.cur >= QZ.qs.length){ qzShow('details'); qzProg(50); }
+      else qzRenderSwipe();
+    }
+
+    function qzUpdateSlider(v) {
+      QZ.guestCount = parseInt(v,10);
+      var label = v<=30?'micro wedding':v<=80?'intimate':v<=150?'medium':v<=300?'large':'grand';
+      document.getElementById('qz-guest-display').textContent = v+' guests ('+label+')';
+      var sl = document.getElementById('qz-guest-slider');
+      var pct = ((v - sl.min)/(sl.max - sl.min))*100;
+      sl.style.background = 'linear-gradient(to right,var(--brown) '+pct+'%,rgba(59,42,26,.1) '+pct+'%)';
+      qzProg(50 + (pct/100)*10);
+    }
+
+    function qzRunMatch() {
+      qzShow('loading'); qzProg(75);
+      /* collect answers for Sheets */
+      var chipArr = Array.from(QZ.chipVals);
+      var payload = {
+        type:'questionnaire', timestamp:new Date().toISOString(),
+        name:registeredUser.name, email:registeredUser.email, phone:registeredUser.phone,
+        guest_count: QZ.guestCount,
+        budget: QZ.budget || '',
+        style_picks: QZ.picks.join(', '),
+        catering: chipArr.filter(function(v){return v.startsWith('cat-');}).join(', '),
+        must_haves: chipArr.filter(function(v){return v.startsWith('mh-');}).join(', '),
+        location: chipArr.filter(function(v){return v.startsWith('loc-');}).join(', ')
+      };
+      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
+      setTimeout(qzDoMatch, 900);
+    }
+
+    function qzParsePriceNums(str) {
+      if(!str) return [];
+      return (str.match(/\d+/g)||[]).map(Number).filter(function(n){return n>15&&n<3000;});
+    }
+
+    function qzDoMatch() {
+      var VENUES = window.QZ_VENUES || [];
+      var budgetRanges = {'budget-low':[0,80],'budget-mid':[80,150],'budget-prem':[150,250],'budget-lux':[250,9999]};
+      var bRange = QZ.budget ? budgetRanges[QZ.budget] : [0,9999];
+      var bLo=bRange[0], bHi=bRange[1];
+      var styleMap = {historic:['castle','historic','mansion','estate','manor','heritage','banquet hall / historic'],outdoor:['barn','farm','garden','outdoor','winery','vineyard','conservation'],formal:['banquet','ballroom','hotel','convention'],casual:['loft','brewery','studio','restaurant','pub','lounge'],indoor:['hotel','banquet','ballroom','loft','convention'],urban:['toronto','downtown','king west','harbourfront','loft','distillery'],garden:['estate','garden','manor','winery','farm','barn'],grand:['ballroom','convention','grand','large'],intimate:['restaurant','loft','studio','private','boutique']};
+      var locKeywords = {'loc-downtown':['downtown','king','queen','liberty','harbourfront','distillery'],'loc-midtown':['north york','midtown','york mills','etobicoke','willowdale'],'loc-east':['east york','scarborough','pickering','ajax','durham'],'loc-west':['mississauga','brampton','oakville','burlington','etobicoke'],'loc-north':['vaughan','markham','richmond hill','aurora','newmarket','woodbridge'],'loc-rural':['kleinburg','king city','erin','gilford','collingwood','niagara'],'loc-any':[]};
+      var selLocs = Array.from(QZ.chipVals).filter(function(v){return v.startsWith('loc-');});
+      var anyLoc = selLocs.length===0||selLocs.includes('loc-any');
+      var scored = VENUES.map(function(v){
+        var s=0, reasons=[];
+        var cap=v.cap||0, g=QZ.guestCount;
+        if(cap>=g*.85&&cap<=g*3){s+=20;reasons.push({t:'Seats '+cap+' — perfect fit',g:true});}
+        else if(cap>=g*.7&&cap<g*.85){s+=10;reasons.push({t:'Seats '+cap+' — slightly snug',g:false});}
+        else if(cap>g*3&&cap<=g*6){s+=10;reasons.push({t:'Seats '+cap+' — quite large',g:false});}
+        else if(cap>0&&cap<g*.7){s-=5;}
+        var nums=qzParsePriceNums(v.price);
+        if(nums.length>0){var mn=Math.min.apply(null,nums),mx=Math.max.apply(null,nums);if(mn>=bLo&&mx<=bHi*1.4){s+=20;reasons.push({t:v.price+' fits your budget',g:true});}else if(mn<=bHi&&mx>=bLo){s+=10;reasons.push({t:v.price+' — partial overlap',g:false});}else if(mn>bHi){s-=8;}}else{s+=8;reasons.push({t:'Pricing on request',g:false});}
+        var stxt=(v.style+' '+v.type+' '+v.n).toLowerCase(); var hits=0;
+        QZ.picks.forEach(function(pick){if(!pick)return;var kws=styleMap[pick]||[];if(kws.some(function(kw){return stxt.includes(kw);}))hits++;});
+        if(hits>=2){s+=25;reasons.push({t:'Matches your style preferences',g:true});}else if(hits===1){s+=12;reasons.push({t:'Partially matches your style',g:false});}
+        var areaLo=(v.area||'').toLowerCase();
+        if(anyLoc){s+=6;}else{selLocs.forEach(function(loc){var kws=locKeywords[loc]||[];if(kws.length===0||kws.some(function(kw){return areaLo.includes(kw);})){s+=12;reasons.push({t:v.area,g:true});}});}
+        if(QZ.chipVals.has('mh-outdoor')){if(v.outdoor&&v.outdoor.toLowerCase().startsWith('yes')){s+=8;reasons.push({t:'Outdoor ceremony space ✓',g:true});}else{s-=10;}}
+        if(QZ.chipVals.has('mh-parking')){if(v.parking&&v.parking.toLowerCase().includes('free')){s+=7;reasons.push({t:'Free parking ✓',g:true});}else{s-=8;}}
+        if(QZ.chipVals.has('mh-dance')){if(v.dance&&v.dance.toLowerCase().startsWith('yes')){s+=6;reasons.push({t:'Dance floor ✓',g:true});}else{s-=8;}}
+        if(QZ.chipVals.has('mh-wheelchair')){if(v.wheelchair&&v.wheelchair.toLowerCase().startsWith('yes')){s+=5;}else{s-=10;}}
+        if(QZ.chipVals.has('mh-view')){if(v.view&&v.view.toLowerCase().startsWith('yes')){s+=8;reasons.push({t:v.view,g:true});}else{s-=5;}}
+        if(QZ.chipVals.has('mh-airport')){if(v.airport&&v.airport.toLowerCase().startsWith('yes')){s+=6;}else{s-=6;}}
+        if(QZ.chipVals.has('cat-halal')){var hal=(v.halal||'').toLowerCase();if(hal.startsWith('yes')){s+=12;reasons.push({t:'Halal catering ✓',g:true});}else{s-=15;}}
+        if(QZ.chipVals.has('cat-kosher')){var kos=(v.kosher||'').toLowerCase();if(kos.startsWith('yes')){s+=12;reasons.push({t:'Kosher catering ✓',g:true});}else{s-=15;}}
+        if(QZ.chipVals.has('cat-onsite')){var cat=(v.cat||'').toLowerCase();if(cat.includes('on-site')||cat.includes('onsite')){s+=6;}}
+        if(QZ.chipVals.has('cat-outside')){var cat2=(v.cat||'').toLowerCase();if(cat2.includes('outside')||cat2.includes('flexible')){s+=6;}}
+        if(v.rating>=4.9&&v.reviews>=20){s+=8;}else if(v.rating>=4.7&&v.reviews>=10){s+=5;}else if(v.rating>=4.5){s+=2;}
+        if(v.pkgs>=3){s+=4;}
+        return {v:v, s:Math.max(0,s), reasons:reasons.slice(0,5)};
+      });
+      scored.sort(function(a,b){return b.s-a.s;});
+      QZ.allScored = scored;
+      qzBuildResults();
+      qzProg(100);
+      qzShow('results');
+    }
+
+    function qzBuildResults() {
+      document.getElementById('qz-results-sub').textContent = 'Matched from '+window.QZ_VENUES.length+' venues across Toronto & GTA';
+      var strip = document.getElementById('qz-profile-strip');
+      strip.innerHTML = '';
+      var budgetLabels = {'budget-low':'Under $80/pp','budget-mid':'$80–$150/pp','budget-prem':'$150–$250/pp','budget-lux':'$250+/pp'};
+      var pills = [{t:QZ.guestCount+' guests',key:true}];
+      if(QZ.budget) pills.push({t:budgetLabels[QZ.budget]||QZ.budget,key:true});
+      QZ.picks.filter(Boolean).forEach(function(p){pills.push({t:p.charAt(0).toUpperCase()+p.slice(1),key:false});});
+      pills.forEach(function(p){ strip.innerHTML += '<div class="qz-ppill'+(p.key?' key':'')+'">'+p.t+'</div>'; });
+      document.getElementById('qz-results-list').innerHTML = '';
+      QZ.shownCount = 5;
+      qzRenderCards(0,5);
+      var mb = document.getElementById('qz-more-btn');
+      if(QZ.allScored.length>5){ mb.classList.remove('qz-hidden'); mb.textContent='Show '+Math.min(5,QZ.allScored.length-5)+' more results'; }
+      else { mb.classList.add('qz-hidden'); }
+    }
+
+    function qzRenderCards(from,count) {
+      var list = document.getElementById('qz-results-list');
+      var maxS = QZ.allScored[0] ? QZ.allScored[0].s : 1;
+      QZ.allScored.slice(from, from+count).forEach(function(item,idx){
+        var rank=from+idx+1, v=item.v, s=item.s, reasons=item.reasons;
+        var pct=Math.round((s/maxS)*100), isTop=rank===1;
+        var tagsHtml=reasons.map(function(r){return'<span class="qz-rtag '+(r.g?'pos':'warn')+'">'+r.t+'</span>';}).join('');
+        var cap=v.cap?v.cap+' seated':'—';
+        var ratingMeta=v.rating&&v.rating>0?(v.rating+'★ · '+v.reviews+' reviews'):'No reviews yet';
+        var pkgNote=v.pkgs>0?(v.pkgs+' package'+(v.pkgs>1?'s':'')+' on file'):'Contact for pricing';
+        var btnHtml=v.url?'<a href="'+v.url+'" target="_blank" style="text-decoration:none"><button class="qz-rbtn p">View venue ↗</button></a>':'<button class="qz-rbtn">Inquire</button>';
+        var card=document.createElement('div');
+        card.className='qz-rcard'+(isTop?' top':'');
+        card.style.animationDelay=(idx*0.08)+'s';
+        card.innerHTML=(isTop?'<div class="qz-topl">★ Top match</div>':'')+
+          '<div class="qz-rhead2"><div class="qz-rrank'+(isTop?' g':'')+'">'+rank+'</div>'+
+          '<div style="flex:1"><div class="qz-rname">'+v.n+'</div><div class="qz-rstyle">'+v.style+' &middot; '+v.area+'</div></div>'+
+          '<div class="qz-rscore"><div class="qz-rsnum">'+pct+'</div><div class="qz-rslbl">match</div></div></div>'+
+          '<div class="qz-bar"><div class="qz-barfill" style="width:'+pct+'%"></div></div>'+
+          '<div class="qz-rgrid"><div><div class="qz-rmlbl">Capacity</div><div class="qz-rmval">'+cap+'</div></div>'+
+          '<div><div class="qz-rmlbl">Price</div><div class="qz-rmval" style="font-size:12px">'+v.price+'</div></div>'+
+          '<div><div class="qz-rmlbl">Rating</div><div class="qz-rmval">'+ratingMeta+'</div></div></div>'+
+          '<div class="qz-rtags">'+tagsHtml+'</div>'+
+          '<div class="qz-rfooter"><div class="qz-rpkg">'+pkgNote+'</div>'+btnHtml+'</div>';
+        list.appendChild(card);
+      });
+    }
+
+    /* Quiz event bindings */
+    bind('qz-begin-btn', function(){ qzShow('swipe'); qzRenderSwipe(); qzProg(5); });
+    bind('qz-skip-btn', function(){ QZ.picks.push(null); qzNextSwipe(); });
+    document.getElementById('qz-guest-slider').addEventListener('input', function(){ qzUpdateSlider(this.value); });
+    document.querySelectorAll('#qzph-details .qz-chip').forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var val = chip.getAttribute('data-val');
+        if(val.startsWith('budget-')){
+          document.querySelectorAll('#qz-budget-chips .qz-chip').forEach(function(c){c.classList.remove('on');});
+          chip.classList.add('on'); QZ.budget = val;
+        } else {
+          chip.classList.toggle('on');
+          if(chip.classList.contains('on')) QZ.chipVals.add(val); else QZ.chipVals.delete(val);
         }
       });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el => obs.observe(el));
-  }
-  triggerReveals();
-
-  document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.parentElement;
-      const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
     });
+    bind('qz-find-btn', qzRunMatch);
+    bind('qz-more-btn', function(){
+      var nextFrom=QZ.shownCount; QZ.shownCount+=5;
+      qzRenderCards(nextFrom,5);
+      var mb=document.getElementById('qz-more-btn');
+      if(QZ.shownCount>=QZ.allScored.length) mb.classList.add('qz-hidden');
+      else mb.textContent='Show '+Math.min(5,QZ.allScored.length-QZ.shownCount)+' more results';
+    });
+    bind('qz-restart-btn', function(){
+      QZ.cur=0; QZ.picks=[]; QZ.guestCount=120; QZ.budget=null;
+      QZ.chipVals=new Set(); QZ.allScored=[]; QZ.shownCount=5;
+      document.getElementById('qz-results-list').innerHTML='';
+      document.getElementById('qz-more-btn').classList.add('qz-hidden');
+      document.getElementById('qz-guest-slider').value=120;
+      document.getElementById('qz-guest-display').textContent='120 guests';
+      document.querySelectorAll('#qzph-details .qz-chip.on').forEach(function(c){c.classList.remove('on');});
+      qzShow('intro'); qzProg(0);
+    });
+    bind('qz-pay-btn', function(){ window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK','_blank'); });
+
+    /* footer links */
+    var footMap={'fl0-home':'home','fl0-how':'how','fl0-venues':'venues','fl0-faq':'faq','fl0-about':'about','fl0-contact':'contact','fl1-home':'home','fl1-how':'how','fl1-venues':'venues','fl1-faq':'faq','fl1-about':'about','fl1-contact':'contact','fl2-home':'home','fl2-how':'how','fl2-venues':'venues','fl2-faq':'faq','fl2-about':'about','fl2-contact':'contact','fl3-home':'home','fl3-how':'how','fl3-venues':'venues','fl3-faq':'faq','fl3-about':'about','fl3-contact':'contact','fl4-home':'home','fl4-how':'how','fl4-venues':'venues','fl4-faq':'faq','fl4-about':'about','fl4-contact':'contact','fl5-home':'home','fl5-how':'how','fl5-venues':'venues','fl5-faq':'faq','fl5-about':'about','fl6-home':'home','fl6-how':'how','fl6-faq':'faq','fl6-contact':'contact'};
+    Object.keys(footMap).forEach(function(id){bind(id,function(){goto(footMap[id]);});});
+
+    /* nav shrink */
+    window.addEventListener('scroll',function(){document.querySelector('nav').style.padding=window.scrollY>60?'.85rem 5vw':'1.3rem 5vw';});
+
   });
-
-  window.addEventListener('scroll', () => {
-    document.querySelector('nav').style.padding = window.scrollY > 60 ? '.85rem 5vw' : '1.3rem 5vw';
-  });
-
-  function openMenu() { document.getElementById('mobile-menu').classList.add('open'); }
-  function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
-
-  function submitForm(btn) {
-    const email = document.getElementById('cf-email').value;
-    if (!email.includes('@')) {
-      document.getElementById('cf-email').style.borderColor = 'rgba(200,80,80,.7)';
-      return;
-    }
-    btn.textContent = 'Message Sent';
-    btn.style.background = 'rgba(255,255,255,.15)';
-    btn.style.color = 'var(--cream)';
-    ['cf-name','cf-email','cf-phone','cf-msg'].forEach(id => document.getElementById(id).value = '');
-    setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.style.color = ''; }, 5000);
-  }
+})();
 </script>
 </body>
 </html>
