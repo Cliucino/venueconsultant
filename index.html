@@ -392,13 +392,18 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
         <input type="text" placeholder="Full name" id="reg-name"/>
         <input type="email" placeholder="Email address" id="reg-email"/>
         <input type="tel" placeholder="Phone number" id="reg-phone"/>
+        <p id="reg-email-msg" style="font-size:.75rem;line-height:1.6;color:rgba(200,80,80,.8);min-height:1rem"></p>
         <button class="btn-gold" id="reg-submit">Create Free Account</button>
+        <div id="reg-verify-wrap" style="display:none;flex-direction:column;gap:.7rem;margin-top:.5rem">
+          <input type="text" placeholder="Enter 6-digit verification code" id="reg-vcode" maxlength="6" style="width:100%;padding:.9rem 1.2rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);color:var(--cream);font-family:var(--sans);font-size:.88rem;outline:none;letter-spacing:.2em;text-align:center"/>
+          <button class="btn-gold" id="reg-verify-btn">Verify &amp; Continue</button>
+        </div>
       </div>
     </div>
     <div style="margin-top:3rem">
       <div class="contact-methods">
         <div class="contact-method"><span class="cm-label">Email</span><a href="/cdn-cgi/l/email-protection#731a1d151c33151f160601041617171a1d14005d1012" class="cm-link"><span class="__cf_email__" data-cfemail="ec85828a83ac8a8089999e9b89888885828b9fc28f8d">[email&#160;protected]</span></a></div>
-        <div class="contact-method"><span class="cm-label">Phone / WhatsApp</span><a href="tel:6472709573" class="cm-link">647-270-9573</a></div>
+        <div class="contact-method"><span class="cm-label">Phone / WhatsApp</span><a href="tel:+14168379899" class="cm-link">+1 416-837-9899</a></div>
       </div>
     </div>
   </div>
@@ -576,10 +581,11 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
     <div class="qz-section">
       <div class="qz-slabel">Catering preference</div>
       <div class="qz-chips">
-        <div class="qz-chip" data-val="cat-onsite">Venue handles catering</div>
+        <div class="qz-chip" data-val="cat-onsite">In-house catering service</div>
         <div class="qz-chip" data-val="cat-outside">Bring our own caterer</div>
         <div class="qz-chip" data-val="cat-halal">Halal required</div>
         <div class="qz-chip" data-val="cat-kosher">Kosher required</div>
+        <div class="qz-chip" data-val="cat-chinese">Chinese catering</div>
       </div>
     </div>
     <div class="qz-section">
@@ -801,15 +807,48 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       var phone=document.getElementById('reg-phone').value.trim();
       var btn=document.getElementById('reg-submit');
       if(!name){document.getElementById('reg-name').style.borderColor='rgba(200,80,80,.6)';return;}
-      if(!email.includes('@')){document.getElementById('reg-email').style.borderColor='rgba(200,80,80,.6)';return;}
+      if(!email.includes('@')||!email.includes('.')){document.getElementById('reg-email').style.borderColor='rgba(200,80,80,.6)';document.getElementById('reg-email-msg').textContent='Please enter a valid email address.';return;}
       if(!phone){document.getElementById('reg-phone').style.borderColor='rgba(200,80,80,.6)';return;}
+      /* Send verification email via Apps Script */
+      var vcode = Math.floor(100000+Math.random()*900000).toString();
+      window._regVerifyCode = vcode;
+      window._regPending = {name:name,email:email,phone:phone};
+      btn.textContent='Sending code...'; btn.disabled=true;
+      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'verify_email',email:email,code:vcode,name:name})}).catch(function(){});
+      setTimeout(function(){
+        btn.textContent='Create Free Account'; btn.disabled=false;
+        document.getElementById('reg-verify-wrap').style.display='block';
+        document.getElementById('reg-email-msg').textContent='We sent a 6-digit code to '+email+'. Please check your inbox.';
+        document.getElementById('reg-email-msg').style.color='var(--gold)';
+      }, 1500);
+      return;
       registeredUser={name:name,email:email,phone:phone};
       btn.textContent='Saving...';
       btn.disabled=true;
+      console.log('REG PAYLOAD:', name, email, phone);
       fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'registration',timestamp:new Date().toISOString(),name:name,email:email,phone:phone})})
       .then(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);})
       .catch(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);});
+    })
+    bind('reg-verify-btn', function(){
+      var code = document.getElementById('reg-vcode').value.trim();
+      var msg = document.getElementById('reg-email-msg');
+      if(!code || code !== window._regVerifyCode) {
+        msg.textContent = 'Incorrect code. Please try again.';
+        msg.style.color = 'rgba(200,80,80,.8)';
+        return;
+      }
+      /* Code correct - complete registration */
+      var p = window._regPending || {};
+      registeredUser = {name: p.name||'', email: p.email||'', phone: p.phone||''};
+      var btn = document.getElementById('reg-verify-btn');
+      btn.textContent = 'Verified!';
+      btn.style.background = 'rgba(255,255,255,.15)';
+      btn.style.color = 'var(--cream)';
+      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'registration',timestamp:new Date().toISOString(),name:p.name,email:p.email,phone:p.phone})}).catch(function(){});
+      setTimeout(function(){ goto('questionnaire'); }, 1000);
     });
+;
 
     /* ── QUIZ (questionnaire page) ── */
     var QZ = {
@@ -939,6 +978,7 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         var sp = {}; Object.keys(window._qzPendingPayload).forEach(function(k){ sp[k]=window._qzPendingPayload[k]; });
         sp.type = 'questionnaire';
         top40.forEach(function(name,i){ sp['recommended_venue_'+(i+1)] = name; });
+        console.log('SHEET PAYLOAD:', JSON.stringify(sp, null, 2));
         fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(sp)}).catch(function(){});
         window._qzPendingPayload = null;
       }
@@ -1015,6 +1055,8 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       var mb=document.getElementById('qz-more-btn');
       if(QZ.shownCount>=QZ.allScored.length) mb.classList.add('qz-hidden');
       else mb.textContent='Show '+Math.min(5,QZ.allScored.length-QZ.shownCount)+' more results';
+      /* Show negotiate popup */
+      document.getElementById('negotiate-popup').style.display='flex';
     });
     bind('qz-restart-btn', function(){
       QZ.cur=0; QZ.picks=[]; QZ.guestCount=120; QZ.budget=null;
@@ -1048,5 +1090,23 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
   });
 })();
 </script>
+
+<!-- Negotiate popup -->
+<div id="negotiate-popup" style="display:none;position:fixed;inset:0;background:rgba(59,42,26,.7);z-index:500;align-items:center;justify-content:center;padding:2rem">
+  <div style="background:var(--brown);max-width:480px;width:100%;padding:3rem;text-align:center;position:relative">
+    <button onclick="document.getElementById('negotiate-popup').style.display='none'" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--cream-dark);font-size:1.5rem;cursor:pointer;font-family:var(--serif)">&#x2715;</button>
+    <p style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem">Let Us Do The Work</p>
+    <h3 style="font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:1rem">Let us negotiate<br><em style="font-style:italic;color:var(--gold)">for you</em></h3>
+    <p style="font-size:.88rem;color:var(--cream-dark);line-height:1.8;margin-bottom:.8rem">We contact 30+ venues, shortlist the best 5, and negotiate your top 2 picks.</p>
+    <div style="display:inline-flex;align-items:center;gap:1rem;margin-bottom:1.8rem">
+      <span style="font-family:var(--serif);font-size:1rem;color:rgba(245,239,228,.4);text-decoration:line-through">$299</span>
+      <span style="font-family:var(--serif);font-size:2.2rem;font-style:italic;color:var(--gold)">$99</span>
+      <span style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dark)">one-time</span>
+    </div>
+    <br>
+    <button onclick="window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK','_blank');document.getElementById('negotiate-popup').style.display='none'" style="background:var(--gold);color:var(--brown);border:none;padding:1rem 2.5rem;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;width:100%;margin-bottom:.8rem">Get Started &mdash; $99 &rarr;</button>
+    <button onclick="document.getElementById('negotiate-popup').style.display='none'" style="background:none;border:none;color:var(--cream-dark);font-size:.78rem;cursor:pointer;font-family:var(--sans);text-decoration:underline">No thanks, keep browsing</button>
+  </div>
+</div>
 </body>
 </html>
