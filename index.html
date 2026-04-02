@@ -230,6 +230,7 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
 @media(max-width:860px){.home-tabs{grid-template-columns:1fr}.home-tab{border-right:none;border-bottom:1px solid var(--cream-dark)}.about-split{grid-template-columns:1fr;gap:2.5rem}.stat-row{grid-template-columns:1fr 1fr}.contact-methods{gap:2rem}.nav-links,.nav-cta{display:none}.hamburger{display:flex}.q-row{grid-template-columns:1fr}}
 @media(max-width:540px){.stat-row{grid-template-columns:1fr}.step-row{grid-template-columns:56px 1fr}.pricing-card{padding:2.5rem 1.8rem}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -662,6 +663,9 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
 
 (function(){
   var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxvihC6A6EEnOLTBrTsP_aMFaYypU2L4Vc_-SehCjeFVLUJvMSiFmZ9aNWG619P_yUSMg/exec';
+  var EMAILJS_SERVICE = 'service_tpg2z2r';
+  var EMAILJS_TEMPLATE = 'template_o545oyg';
+  var EMAILJS_KEY = 'd5wpir0UQ8c90hc5O';
 
   /* Send data to Apps Script via hidden form POST - bypasses CORS */
   function callSheet(params) {
@@ -833,7 +837,16 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       window._regVerifyCode = vcode;
       window._regPending = {name:name,email:email,phone:phone};
       btn.textContent='Sending code...'; btn.disabled=true;
-      callSheet({type:'verify_email', email:email, code:vcode, name:name});
+      emailjs.init(EMAILJS_KEY);
+      emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+        to_email: email,
+        name: name,
+        code: vcode
+      }).then(function(){
+        console.log('Verification email sent');
+      }).catch(function(err){
+        console.log('EmailJS error:', err);
+      });
       setTimeout(function(){
         btn.textContent='Create Free Account'; btn.disabled=false;
         document.getElementById('reg-verify-wrap').style.display='block';
