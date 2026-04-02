@@ -662,6 +662,25 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
 
 (function(){
   var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxvihC6A6EEnOLTBrTsP_aMFaYypU2L4Vc_-SehCjeFVLUJvMSiFmZ9aNWG619P_yUSMg/exec';
+
+  /* Send data to Apps Script via hidden form POST - bypasses CORS */
+  function callSheet(params) {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SHEET_URL;
+    form.target = '_sheet_frame';
+    form.style.display = 'none';
+    Object.keys(params).forEach(function(k) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = k;
+      input.value = params[k];
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(function(){ document.body.removeChild(form); }, 3000);
+  }
   var registeredUser = {name:'',email:'',phone:''};
 
   var venues = [
@@ -814,7 +833,7 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       window._regVerifyCode = vcode;
       window._regPending = {name:name,email:email,phone:phone};
       btn.textContent='Sending code...'; btn.disabled=true;
-      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'verify_email',email:email,code:vcode,name:name})}).catch(function(){});
+      callSheet({type:'verify_email', email:email, code:vcode, name:name});
       setTimeout(function(){
         btn.textContent='Create Free Account'; btn.disabled=false;
         document.getElementById('reg-verify-wrap').style.display='block';
@@ -845,7 +864,7 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       btn.textContent = 'Verified!';
       btn.style.background = 'rgba(255,255,255,.15)';
       btn.style.color = 'var(--cream)';
-      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'registration',timestamp:new Date().toISOString(),name:p.name,email:p.email,phone:p.phone})}).catch(function(){});
+      callSheet({type:'registration', timestamp:new Date().toISOString(), name:p.name, email:p.email, phone:p.phone});
       setTimeout(function(){ goto('questionnaire'); }, 1000);
     });
 ;
@@ -979,7 +998,7 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         sp.type = 'questionnaire';
         top40.forEach(function(name,i){ sp['recommended_venue_'+(i+1)] = name; });
         console.log('SHEET PAYLOAD:', JSON.stringify(sp, null, 2));
-        fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(sp)}).catch(function(){});
+        callSheet(sp);
         window._qzPendingPayload = null;
       }
       qzBuildResults();
@@ -1108,5 +1127,6 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
     <button onclick="document.getElementById('negotiate-popup').style.display='none'" style="background:none;border:none;color:var(--cream-dark);font-size:.78rem;cursor:pointer;font-family:var(--sans);text-decoration:underline">No thanks, keep browsing</button>
   </div>
 </div>
+<iframe name="_sheet_frame" style="display:none"></iframe>
 </body>
 </html>
