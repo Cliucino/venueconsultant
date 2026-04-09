@@ -1011,7 +1011,12 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         sp.type = 'questionnaire';
         top40.forEach(function(name,i){ sp['recommended_venue_'+(i+1)] = name; });
         console.log('SHEET PAYLOAD:', JSON.stringify(sp, null, 2));
-        callSheet(sp);
+        fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(sp)
+        }).catch(function(){});
         window._qzPendingPayload = null;
       }
       qzBuildResults();
