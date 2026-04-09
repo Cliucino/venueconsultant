@@ -1011,12 +1011,24 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         sp.type = 'questionnaire';
         top40.forEach(function(name,i){ sp['recommended_venue_'+(i+1)] = name; });
         console.log('SHEET PAYLOAD:', JSON.stringify(sp, null, 2));
-        fetch(SHEET_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(sp)
-        }).catch(function(){});
+        /* Use form POST to bypass CORS - same method as registration */
+        var qForm = document.createElement('form');
+        qForm.method = 'POST';
+        qForm.action = SHEET_URL;
+        qForm.target = '_sheet_frame';
+        qForm.style.display = 'none';
+        Object.keys(sp).forEach(function(k) {
+          var inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = k;
+          inp.value = sp[k] !== undefined ? sp[k] : '';
+          qForm.appendChild(inp);
+        });
+        document.body.appendChild(qForm);
+        qForm.submit();
+        setTimeout(function(){ 
+          if(qForm.parentNode) document.body.removeChild(qForm); 
+        }, 3000);
         window._qzPendingPayload = null;
       }
       qzBuildResults();
