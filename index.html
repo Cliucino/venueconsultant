@@ -667,23 +667,13 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
   var EMAILJS_TEMPLATE = 'template_o545oyg';
   var EMAILJS_KEY = 'd5wpir0UQ8c90hc5O';
 
-  /* Send data to Apps Script via hidden form POST - bypasses CORS */
   function callSheet(params) {
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = SHEET_URL;
-    form.target = '_sheet_frame';
-    form.style.display = 'none';
-    Object.keys(params).forEach(function(k) {
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = k;
-      input.value = params[k];
-      form.appendChild(input);
-    });
-    document.body.appendChild(form);
-    form.submit();
-    setTimeout(function(){ document.body.removeChild(form); }, 3000);
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(params)
+    }).catch(function(){});
   }
   var registeredUser = {name:'',email:'',phone:''};
 
@@ -837,16 +827,8 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       window._regVerifyCode = vcode;
       window._regPending = {name:name,email:email,phone:phone};
       btn.textContent='Sending code...'; btn.disabled=true;
-      emailjs.init(EMAILJS_KEY);
-      emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-        to_email: email,
-        name: name,
-        code: vcode
-      }).then(function(){
-        console.log('Verification email sent');
-      }).catch(function(err){
-        console.log('EmailJS error:', err);
-      });
+      callSheet({type:'verify_email', email:email, code:vcode, name:name});
+      console.log('Verification email sent');
       setTimeout(function(){
         btn.textContent='Create Free Account'; btn.disabled=false;
         document.getElementById('reg-verify-wrap').style.display='block';
@@ -857,10 +839,11 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       registeredUser={name:name,email:email,phone:phone};
       btn.textContent='Saving...';
       btn.disabled=true;
-      console.log('REG PAYLOAD:', name, email, phone);
-      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'registration',timestamp:new Date().toISOString(),name:name,email:email,phone:phone})})
-      .then(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);})
-      .catch(function(){btn.textContent='Account Created!';btn.style.background='rgba(255,255,255,.15)';btn.style.color='var(--cream)';setTimeout(function(){goto('questionnaire');},1200);});
+      callSheet({type:'registration', timestamp:new Date().toISOString(), name:name, email:email, phone:phone});
+      btn.textContent='Account Created!';
+      btn.style.background='rgba(255,255,255,.15)';
+      btn.style.color='var(--cream)';
+      setTimeout(function(){goto('questionnaire');}, 1200);
     })
     bind('reg-verify-btn', function(){
       var code = document.getElementById('reg-vcode').value.trim();
@@ -1011,24 +994,7 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         sp.type = 'questionnaire';
         top40.forEach(function(name,i){ sp['recommended_venue_'+(i+1)] = name; });
         console.log('SHEET PAYLOAD:', JSON.stringify(sp, null, 2));
-        /* Use form POST to bypass CORS - same method as registration */
-        var qForm = document.createElement('form');
-        qForm.method = 'POST';
-        qForm.action = SHEET_URL;
-        qForm.target = '_sheet_frame';
-        qForm.style.display = 'none';
-        Object.keys(sp).forEach(function(k) {
-          var inp = document.createElement('input');
-          inp.type = 'hidden';
-          inp.name = k;
-          inp.value = sp[k] !== undefined ? sp[k] : '';
-          qForm.appendChild(inp);
-        });
-        document.body.appendChild(qForm);
-        qForm.submit();
-        setTimeout(function(){ 
-          if(qForm.parentNode) document.body.removeChild(qForm); 
-        }, 3000);
+        callSheet(sp);
         window._qzPendingPayload = null;
       }
       qzBuildResults();
@@ -1157,6 +1123,5 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
     <button onclick="document.getElementById('negotiate-popup').style.display='none'" style="background:none;border:none;color:var(--cream-dark);font-size:.78rem;cursor:pointer;font-family:var(--sans);text-decoration:underline">No thanks, keep browsing</button>
   </div>
 </div>
-<iframe name="_sheet_frame" style="display:none"></iframe>
 </body>
 </html>
