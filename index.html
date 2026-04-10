@@ -229,6 +229,38 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
 /* RESPONSIVE */
 @media(max-width:860px){.home-tabs{grid-template-columns:1fr}.home-tab{border-right:none;border-bottom:1px solid var(--cream-dark)}.about-split{grid-template-columns:1fr;gap:2.5rem}.stat-row{grid-template-columns:1fr 1fr}.contact-methods{gap:2rem}.nav-links,.nav-cta{display:none}.hamburger{display:flex}.q-row{grid-template-columns:1fr}}
 @media(max-width:540px){.stat-row{grid-template-columns:1fr}.step-row{grid-template-columns:56px 1fr}.pricing-card{padding:2.5rem 1.8rem}}
+
+/* ── SIGNATURE MODAL ── */
+.sig-overlay{display:none;position:fixed;inset:0;background:rgba(59,42,26,.75);z-index:500;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto}
+.sig-overlay.open{display:flex}
+.sig-box{background:var(--white);max-width:720px;width:100%;margin:auto;padding:0}
+.sig-header{background:var(--brown);padding:1.8rem 2.5rem;display:flex;justify-content:space-between;align-items:center}
+.sig-header h2{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--cream)}
+.sig-header-close{background:none;border:none;color:var(--cream-dark);font-size:1.5rem;cursor:pointer;font-family:var(--serif)}
+.sig-terms{padding:1.8rem 2.5rem;max-height:320px;overflow-y:auto;border-bottom:1px solid var(--cream-dark);font-size:.82rem;line-height:1.9;color:var(--brown-mid)}
+.sig-terms h3{font-family:var(--serif);font-size:1.1rem;color:var(--brown);margin:1.2rem 0 .4rem}
+.sig-terms h3:first-child{margin-top:0}
+.sig-terms p{margin-bottom:.6rem}
+.sig-terms ul{margin:.4rem 0 .8rem 1.2rem}
+.sig-terms ul li{margin-bottom:.3rem}
+.sig-body{padding:1.8rem 2.5rem}
+.sig-field-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brown-mid);margin-bottom:.5rem;display:block}
+.sig-name-input{width:100%;padding:.85rem 1.1rem;border:1px solid var(--cream-dark);background:var(--cream);color:var(--brown);font-family:var(--sans);font-size:.95rem;outline:none;margin-bottom:1.5rem}
+.sig-name-input:focus{border-color:var(--gold)}
+.sig-canvas-wrap{position:relative;border:1px solid var(--cream-dark);background:white;margin-bottom:.5rem}
+#sig-canvas{display:block;width:100%;height:160px;cursor:crosshair;touch-action:none}
+.sig-canvas-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:1rem;font-style:italic;color:rgba(59,42,26,.2);pointer-events:none;transition:opacity .2s}
+.sig-clear{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--sans);margin-bottom:1.2rem;padding:0}
+.sig-clear:hover{text-decoration:underline}
+.sig-checkbox-row{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1.5rem;font-size:.85rem;color:var(--brown-mid);line-height:1.6}
+.sig-checkbox-row input{margin-top:.2rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--brown);cursor:pointer}
+.sig-footer{display:flex;gap:1rem;padding:0 2.5rem 2rem}
+.sig-submit-btn{flex:1;background:var(--brown);color:var(--cream);border:none;padding:1rem;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.sig-submit-btn:hover{background:var(--brown-mid)}
+.sig-submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.sig-cancel-btn{background:none;border:1px solid var(--cream-dark);color:var(--brown-mid);padding:1rem 1.5rem;font-family:var(--sans);font-size:.8rem;cursor:pointer;transition:all .2s}
+.sig-cancel-btn:hover{border-color:var(--brown);color:var(--brown)}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
@@ -529,6 +561,38 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
 .qz-pay-old{font-family:var(--serif);font-size:1rem;color:rgba(245,239,228,.4);text-decoration:line-through}
 .qz-pay-now{font-family:var(--serif);font-size:2rem;font-style:italic;color:var(--gold)}
 @media(max-width:480px){.qz-pair{grid-template-columns:1fr 1fr}.qz-cimg{height:100px;font-size:38px}.qz-rgrid{grid-template-columns:1fr 1fr}}
+
+/* ── SIGNATURE MODAL ── */
+.sig-overlay{display:none;position:fixed;inset:0;background:rgba(59,42,26,.75);z-index:500;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto}
+.sig-overlay.open{display:flex}
+.sig-box{background:var(--white);max-width:720px;width:100%;margin:auto;padding:0}
+.sig-header{background:var(--brown);padding:1.8rem 2.5rem;display:flex;justify-content:space-between;align-items:center}
+.sig-header h2{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--cream)}
+.sig-header-close{background:none;border:none;color:var(--cream-dark);font-size:1.5rem;cursor:pointer;font-family:var(--serif)}
+.sig-terms{padding:1.8rem 2.5rem;max-height:320px;overflow-y:auto;border-bottom:1px solid var(--cream-dark);font-size:.82rem;line-height:1.9;color:var(--brown-mid)}
+.sig-terms h3{font-family:var(--serif);font-size:1.1rem;color:var(--brown);margin:1.2rem 0 .4rem}
+.sig-terms h3:first-child{margin-top:0}
+.sig-terms p{margin-bottom:.6rem}
+.sig-terms ul{margin:.4rem 0 .8rem 1.2rem}
+.sig-terms ul li{margin-bottom:.3rem}
+.sig-body{padding:1.8rem 2.5rem}
+.sig-field-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brown-mid);margin-bottom:.5rem;display:block}
+.sig-name-input{width:100%;padding:.85rem 1.1rem;border:1px solid var(--cream-dark);background:var(--cream);color:var(--brown);font-family:var(--sans);font-size:.95rem;outline:none;margin-bottom:1.5rem}
+.sig-name-input:focus{border-color:var(--gold)}
+.sig-canvas-wrap{position:relative;border:1px solid var(--cream-dark);background:white;margin-bottom:.5rem}
+#sig-canvas{display:block;width:100%;height:160px;cursor:crosshair;touch-action:none}
+.sig-canvas-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:1rem;font-style:italic;color:rgba(59,42,26,.2);pointer-events:none;transition:opacity .2s}
+.sig-clear{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--sans);margin-bottom:1.2rem;padding:0}
+.sig-clear:hover{text-decoration:underline}
+.sig-checkbox-row{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1.5rem;font-size:.85rem;color:var(--brown-mid);line-height:1.6}
+.sig-checkbox-row input{margin-top:.2rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--brown);cursor:pointer}
+.sig-footer{display:flex;gap:1rem;padding:0 2.5rem 2rem}
+.sig-submit-btn{flex:1;background:var(--brown);color:var(--cream);border:none;padding:1rem;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.sig-submit-btn:hover{background:var(--brown-mid)}
+.sig-submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.sig-cancel-btn{background:none;border:1px solid var(--cream-dark);color:var(--brown-mid);padding:1rem 1.5rem;font-family:var(--sans);font-size:.8rem;cursor:pointer;transition:all .2s}
+.sig-cancel-btn:hover{border-color:var(--brown);color:var(--brown)}
+
 </style>
 
 <div class="qz-progress-track"><div class="qz-progress-fill" id="qz-progress" style="width:0%"></div></div>
@@ -1125,6 +1189,113 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
     var footMap={'fl0-home':'home','fl0-how':'how','fl0-venues':'venues','fl0-faq':'faq','fl0-about':'about','fl0-contact':'contact','fl1-home':'home','fl1-how':'how','fl1-venues':'venues','fl1-faq':'faq','fl1-about':'about','fl1-contact':'contact','fl2-home':'home','fl2-how':'how','fl2-venues':'venues','fl2-faq':'faq','fl2-about':'about','fl2-contact':'contact','fl3-home':'home','fl3-how':'how','fl3-venues':'venues','fl3-faq':'faq','fl3-about':'about','fl3-contact':'contact','fl4-home':'home','fl4-how':'how','fl4-venues':'venues','fl4-faq':'faq','fl4-about':'about','fl4-contact':'contact','fl5-home':'home','fl5-how':'how','fl5-venues':'venues','fl5-faq':'faq','fl5-about':'about','fl6-home':'home','fl6-how':'how','fl6-faq':'faq','fl6-contact':'contact'};
     Object.keys(footMap).forEach(function(id){bind(id,function(){goto(footMap[id]);});});
 
+
+    /* ── SIGNATURE / AGREEMENT ── */
+    (function(){
+      var canvas, ctx, drawing = false, hasSig = false;
+
+      function initCanvas() {
+        canvas = document.getElementById('sig-canvas');
+        if(!canvas) return;
+        ctx = canvas.getContext('2d');
+        /* Scale for retina */
+        var rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = 160 * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        canvas.style.height = '160px';
+        ctx.strokeStyle = '#3B2A1A';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+
+      function getPos(e) {
+        var rect = canvas.getBoundingClientRect();
+        var src = e.touches ? e.touches[0] : e;
+        return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+      }
+
+      function checkReady() {
+        var nameOk = document.getElementById('sig-name-input').value.trim().length > 1;
+        var checked = document.getElementById('sig-agree-chk').checked;
+        var btn = document.getElementById('sig-submit-btn');
+        btn.disabled = !(nameOk && hasSig && checked);
+      }
+
+      function openSigModal() {
+        document.getElementById('sig-overlay').classList.add('open');
+        setTimeout(initCanvas, 50);
+      }
+
+      /* Intercept all payment buttons */
+      ['qz-pay-btn','pricing-start','how-start'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.addEventListener('click', function(e){
+          e.stopImmediatePropagation();
+          openSigModal();
+        }, true);
+      });
+
+      /* Intercept negotiate popup button */
+      document.addEventListener('click', function(e){
+        var btn = e.target.closest && e.target.closest('#negotiate-popup .qz-btn');
+        if(btn){ e.stopImmediatePropagation(); openSigModal(); }
+      }, true);
+
+      document.addEventListener('DOMContentLoaded', function(){
+        /* Canvas drawing */
+        var cv = document.getElementById('sig-canvas');
+        if(cv){
+          cv.addEventListener('mousedown', function(e){ drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+          cv.addEventListener('mousemove', function(e){ if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); hasSig=true; document.getElementById('sig-canvas-label').style.opacity='0'; checkReady(); });
+          cv.addEventListener('mouseup', function(){ drawing=false; });
+          cv.addEventListener('mouseleave', function(){ drawing=false; });
+          cv.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }, {passive:false});
+          cv.addEventListener('touchmove', function(e){ e.preventDefault(); if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); hasSig=true; document.getElementById('sig-canvas-label').style.opacity='0'; checkReady(); }, {passive:false});
+          cv.addEventListener('touchend', function(){ drawing=false; });
+        }
+
+        /* Clear button */
+        var clr = document.getElementById('sig-clear-btn');
+        if(clr) clr.addEventListener('click', function(){
+          if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
+          hasSig=false;
+          document.getElementById('sig-canvas-label').style.opacity='1';
+          checkReady();
+        });
+
+        /* Name input */
+        var ni = document.getElementById('sig-name-input');
+        if(ni) ni.addEventListener('input', checkReady);
+
+        /* Checkbox */
+        var chk = document.getElementById('sig-agree-chk');
+        if(chk) chk.addEventListener('change', checkReady);
+
+        /* Close / Cancel */
+        ['sig-close-btn','sig-cancel-btn'].forEach(function(id){
+          var el = document.getElementById(id);
+          if(el) el.addEventListener('click', function(){ document.getElementById('sig-overlay').classList.remove('open'); });
+        });
+
+        /* Click outside to close */
+        document.getElementById('sig-overlay').addEventListener('click', function(e){
+          if(e.target === this) this.classList.remove('open');
+        });
+
+        /* Sign & proceed */
+        var sbtn = document.getElementById('sig-submit-btn');
+        if(sbtn) sbtn.addEventListener('click', function(){
+          sbtn.textContent = 'Redirecting...';
+          sbtn.disabled = true;
+          document.getElementById('sig-overlay').classList.remove('open');
+          window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK','_blank');
+          setTimeout(function(){ sbtn.textContent = 'Sign & Proceed to Payment →'; sbtn.disabled=false; }, 3000);
+        });
+      });
+    })();
+
     /* nav shrink */
     window.addEventListener('scroll',function(){document.querySelector('nav').style.padding=window.scrollY>60?'.85rem 5vw':'1.3rem 5vw';});
 
@@ -1149,5 +1320,66 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
     <button onclick="document.getElementById('negotiate-popup').style.display='none'" style="background:none;border:none;color:var(--cream-dark);font-size:.78rem;cursor:pointer;font-family:var(--sans);text-decoration:underline">No thanks, keep browsing</button>
   </div>
 </div>
+
+<!-- Agreement + Signature Modal -->
+<div class="sig-overlay" id="sig-overlay">
+  <div class="sig-box">
+    <div class="sig-header">
+      <h2>Service Agreement</h2>
+      <button class="sig-header-close" id="sig-close-btn">&#x2715;</button>
+    </div>
+    <div class="sig-terms">
+      <h3>VENUE CONSULTANT SERVICE AGREEMENT</h3>
+      <p>This Service Agreement is entered into as of the date of acceptance between <strong>VenueConsultant.ca</strong>, 50 Samor Road, North York, Ontario, Canada ("Consultant") and the Client identified below.</p>
+      <h3>1. SERVICES</h3>
+      <p><strong>1.1 Scope of Services</strong></p>
+      <ul><li>Conduct a structured intake to assess the Client's event requirements</li><li>Source and engage a curated selection of suitable venues</li><li>Obtain availability, preliminary pricing, and relevant event details</li><li>Present a refined shortlist of recommended venues</li><li>Provide comparative insights and strategic recommendations</li><li>Facilitate communication and coordination with selected venues</li></ul>
+      <p><strong>1.2 Negotiation Services</strong></p>
+      <ul><li>The Consultant will negotiate with up to two (2) selected venues on behalf of the Client</li><li>Additional venue negotiations may be provided at a fee of $99 per venue</li></ul>
+      <h3>2. TIMELINE</h3>
+      <ul><li>Estimated service duration: 4 to 6 weeks</li><li>Timelines are dependent on third-party venue responsiveness</li><li>The Consultant does not guarantee response times or availability</li></ul>
+      <h3>3. FEES &amp; PAYMENT</h3>
+      <p>Standard Fee: $299 &mdash; Promotional Fee: $99 (limited-time). Full payment is required prior to commencement of services. Payment is a one-time, non-recurring fee. Accepted methods: Credit Card, Email Money Transfer.</p>
+      <h3>4. PERFORMANCE GUARANTEE</h3>
+      <p>If the total negotiated savings achieved for the Client is less than the service fee paid, the Client will receive a refund equal to the difference. Savings are determined based on lowered minimum spending, negotiated discounts, favourable terms, and added value from venues. The Consultant retains sole discretion in determining reasonable valuation of savings.</p>
+      <h3>5. CLIENT RESPONSIBILITIES</h3>
+      <ul><li>Provide accurate and complete information</li><li>Respond to communications in a timely manner</li><li>Review and approve options promptly</li></ul>
+      <p>The Consultant is not responsible for delays caused by Client inaction.</p>
+      <h3>6. EXCLUSIVITY &amp; NON-CIRCUMVENTION</h3>
+      <p>The Client agrees that the Consultant shall act as the exclusive representative for venue sourcing and agrees not to directly contact, negotiate with, or engage any venues introduced by the Consultant without the Consultant's involvement. This clause remains enforceable for 6 months following termination of this Agreement.</p>
+      <h3>7. LIMITATION OF SERVICES</h3>
+      <p>The Consultant does not act as a legal representative, does not execute contracts on behalf of the Client, does not manage payments between Client and venues, and does not guarantee specific pricing or availability. All final agreements are entered into directly between the Client and the selected venue.</p>
+      <h3>8. CANCELLATION &amp; REFUND</h3>
+      <p>All payments are non-refundable except under Section 4. No refund applies if the Client discontinues service voluntarily, fails to respond, or elects not to proceed with recommended options.</p>
+      <h3>9. LIMITATION OF LIABILITY</h3>
+      <p>The Consultant acts solely as an advisor and negotiator. Total liability shall not exceed the amount paid by the Client.</p>
+      <h3>10. FORCE MAJEURE</h3>
+      <p>The Consultant shall not be held liable for delays due to natural disasters, government restrictions, venue closures, or pandemics.</p>
+      <h3>11. CONFIDENTIALITY</h3>
+      <p>All Client information shall be treated as confidential and used solely for service delivery purposes.</p>
+      <h3>12. GOVERNING LAW</h3>
+      <p>This Agreement shall be governed by the laws of the Province of Ontario, Canada.</p>
+    </div>
+    <div class="sig-body">
+      <label class="sig-field-label" for="sig-name-input">Your Full Name (type to sign)</label>
+      <input class="sig-name-input" type="text" id="sig-name-input" placeholder="Type your full legal name"/>
+      <label class="sig-field-label">Your Signature (draw below)</label>
+      <div class="sig-canvas-wrap">
+        <canvas id="sig-canvas" width="680" height="160"></canvas>
+        <span class="sig-canvas-label" id="sig-canvas-label">Sign here</span>
+      </div>
+      <button class="sig-clear" id="sig-clear-btn">&#x2715; Clear signature</button>
+      <div class="sig-checkbox-row">
+        <input type="checkbox" id="sig-agree-chk"/>
+        <label for="sig-agree-chk">I have read, understood, and agree to the terms of this Service Agreement. I confirm that my typed name and drawn signature constitute my legal electronic signature.</label>
+      </div>
+    </div>
+    <div class="sig-footer">
+      <button class="sig-cancel-btn" id="sig-cancel-btn">Cancel</button>
+      <button class="sig-submit-btn" id="sig-submit-btn" disabled>Sign &amp; Proceed to Payment &rarr;</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
