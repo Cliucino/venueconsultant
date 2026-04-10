@@ -691,8 +691,10 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
     var qs = Object.keys(params).map(function(k){
       return encodeURIComponent(k) + '=' + encodeURIComponent(params[k] !== undefined ? params[k] : '');
     }).join('&');
+    var url = SHEET_URL + '?' + qs;
+    console.log('sendGet URL length:', url.length, 'type:', params.type);
     var img = new Image();
-    img.src = SHEET_URL + '?' + qs;
+    img.src = url;
   }
   var registeredUser = {name:'',email:'',phone:''};
 
@@ -846,8 +848,13 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       window._regVerifyCode = vcode;
       window._regPending = {name:name,email:email,phone:phone};
       btn.textContent='Sending code...'; btn.disabled=true;
-      callSheet({type:'verify_email', email:email, code:vcode, name:name});
-      console.log('Verification email sent');
+      emailjs.send('service_tpg2z2r', 'template_o545oyg', {
+        to_email: email,
+        name: name,
+        code: vcode
+      }, 'd5wpir0UQ8c90hc5O')
+      .then(function(){ console.log('Verification email sent'); })
+      .catch(function(err){ console.log('EmailJS error:', JSON.stringify(err)); });
       setTimeout(function(){
         btn.textContent='Create Free Account'; btn.disabled=false;
         document.getElementById('reg-verify-wrap').style.display='block';
