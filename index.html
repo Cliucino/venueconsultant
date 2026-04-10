@@ -1338,6 +1338,8 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
             sbtn.textContent = 'Redirecting...';
             sbtn.disabled = true;
             closeSigModal();
+            var ni2 = document.getElementById('sig-name-input');
+            sendGet({type:'signature', timestamp:new Date().toISOString(), name:registeredUser.name, email:registeredUser.email, signed_name:ni2?ni2.value.trim():'', signed:'yes'});
             window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK','_blank');
             setTimeout(function(){ sbtn.textContent='Sign & Proceed to Payment →'; sbtn.disabled=false; },3000);
           });
