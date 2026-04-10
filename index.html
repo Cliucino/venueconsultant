@@ -1195,18 +1195,18 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
       var sigCanvas, sigCtx, sigDrawing = false, sigHasSig = false;
 
       function sigCheckReady() {
-        var nameOk = (document.getElementById('sig-name-input').value.trim().length > 1);
-        var checked = document.getElementById('sig-agree-chk').checked;
+        var ni = document.getElementById('sig-name-input');
+        var chk = document.getElementById('sig-agree-chk');
         var btn = document.getElementById('sig-submit-btn');
-        if(btn) btn.disabled = !(nameOk && sigHasSig && checked);
+        if(!ni||!chk||!btn) return;
+        btn.disabled = !(ni.value.trim().length > 1 && chk.checked && sigHasSig);
       }
 
       function sigInitCanvas() {
         sigCanvas = document.getElementById('sig-canvas');
         if(!sigCanvas) return;
         sigCtx = sigCanvas.getContext('2d');
-        var w = sigCanvas.offsetWidth;
-        sigCanvas.width = w;
+        sigCanvas.width = sigCanvas.offsetWidth || 640;
         sigCanvas.height = 160;
         sigCtx.strokeStyle = '#3B2A1A';
         sigCtx.lineWidth = 2.5;
@@ -1221,135 +1221,143 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
         var rect = sigCanvas.getBoundingClientRect();
         var src = e.touches ? e.touches[0] : e;
         return {
-          x: (src.clientX - rect.left) * (sigCanvas.width / rect.width),
-          y: (src.clientY - rect.top) * (sigCanvas.height / rect.height)
+          x: src.clientX - rect.left,
+          y: src.clientY - rect.top
         };
       }
 
       function openSigModal() {
-        document.getElementById('sig-overlay').classList.add('open');
-        document.getElementById('sig-name-input').value = '';
-        document.getElementById('sig-agree-chk').checked = false;
+        var overlay = document.getElementById('sig-overlay');
+        if(!overlay) return;
+        /* Reset form */
+        var ni = document.getElementById('sig-name-input');
+        var chk = document.getElementById('sig-agree-chk');
         var btn = document.getElementById('sig-submit-btn');
+        if(ni) ni.value = '';
+        if(chk) chk.checked = false;
         if(btn) btn.disabled = true;
-        setTimeout(sigInitCanvas, 100);
+        overlay.classList.add('open');
+        setTimeout(function() {
+          sigInitCanvas();
+          bindCanvasEvents();
+          bindModalButtons();
+        }, 100);
       }
 
       function closeSigModal() {
-        document.getElementById('sig-overlay').classList.remove('open');
+        var overlay = document.getElementById('sig-overlay');
+        if(overlay) overlay.classList.remove('open');
       }
 
-      /* Bind all payment buttons */
-      document.addEventListener('click', function(e) {
-        /* Check if clicked element or any parent is a payment trigger */
-        var el = e.target;
-        var payIds = ['qz-pay-btn', 'pricing-start', 'how-start', 'nav-cta', 'home-start'];
-        /* Check negotiate popup button */
-        var inNegotiatePopup = el.closest && el.closest('#negotiate-popup');
-        var isNegotiateBtn = inNegotiatePopup && (el.tagName === 'BUTTON' || el.closest('button'));
+      function bindCanvasEvents() {
+        var cv = document.getElementById('sig-canvas');
+        if(!cv || cv._sigBound) return;
+        cv._sigBound = true;
 
-        var isPayBtn = false;
-        payIds.forEach(function(id) {
-          if(el.id === id || (el.closest && el.closest('#'+id))) isPayBtn = true;
+        cv.addEventListener('mousedown', function(e) {
+          e.preventDefault(); sigDrawing = true;
+          var p = sigGetPos(e);
+          sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y);
         });
+        cv.addEventListener('mousemove', function(e) {
+          e.preventDefault(); if(!sigDrawing) return;
+          var p = sigGetPos(e);
+          sigCtx.lineTo(p.x, p.y); sigCtx.stroke();
+          sigHasSig = true;
+          var lbl = document.getElementById('sig-canvas-label');
+          if(lbl) lbl.style.opacity = '0';
+          sigCheckReady();
+        });
+        cv.addEventListener('mouseup', function() { sigDrawing = false; });
+        cv.addEventListener('mouseleave', function() { sigDrawing = false; });
+        cv.addEventListener('touchstart', function(e) {
+          e.preventDefault(); sigDrawing = true;
+          var p = sigGetPos(e);
+          sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y);
+        }, {passive:false});
+        cv.addEventListener('touchmove', function(e) {
+          e.preventDefault(); if(!sigDrawing) return;
+          var p = sigGetPos(e);
+          sigCtx.lineTo(p.x, p.y); sigCtx.stroke();
+          sigHasSig = true;
+          var lbl = document.getElementById('sig-canvas-label');
+          if(lbl) lbl.style.opacity = '0';
+          sigCheckReady();
+        }, {passive:false});
+        cv.addEventListener('touchend', function() { sigDrawing = false; });
+      }
 
-        if(isPayBtn || isNegotiateBtn) {
-          e.preventDefault();
-          e.stopPropagation();
-          openSigModal();
+      function bindModalButtons() {
+        /* Close X */
+        var closeBtn = document.getElementById('sig-close-btn');
+        if(closeBtn && !closeBtn._sigBound) {
+          closeBtn._sigBound = true;
+          closeBtn.addEventListener('click', function(e) { e.stopPropagation(); closeSigModal(); });
+        }
+        /* Cancel */
+        var cancelBtn = document.getElementById('sig-cancel-btn');
+        if(cancelBtn && !cancelBtn._sigBound) {
+          cancelBtn._sigBound = true;
+          cancelBtn.addEventListener('click', function(e) { e.stopPropagation(); closeSigModal(); });
+        }
+        /* Click outside */
+        var overlay = document.getElementById('sig-overlay');
+        if(overlay && !overlay._sigBound) {
+          overlay._sigBound = true;
+          overlay.addEventListener('click', function(e) { if(e.target===overlay) closeSigModal(); });
+        }
+        /* Clear */
+        var clrBtn = document.getElementById('sig-clear-btn');
+        if(clrBtn && !clrBtn._sigBound) {
+          clrBtn._sigBound = true;
+          clrBtn.addEventListener('click', function() {
+            if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
+            sigHasSig = false;
+            var lbl = document.getElementById('sig-canvas-label');
+            if(lbl) lbl.style.opacity = '1';
+            sigCheckReady();
+          });
+        }
+        /* Name */
+        var ni = document.getElementById('sig-name-input');
+        if(ni && !ni._sigBound) {
+          ni._sigBound = true;
+          ni.addEventListener('input', sigCheckReady);
+        }
+        /* Checkbox */
+        var chk = document.getElementById('sig-agree-chk');
+        if(chk && !chk._sigBound) {
+          chk._sigBound = true;
+          chk.addEventListener('change', sigCheckReady);
+        }
+        /* Submit */
+        var sbtn = document.getElementById('sig-submit-btn');
+        if(sbtn && !sbtn._sigBound) {
+          sbtn._sigBound = true;
+          sbtn.addEventListener('click', function() {
+            sbtn.textContent = 'Redirecting...';
+            sbtn.disabled = true;
+            closeSigModal();
+            window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK','_blank');
+            setTimeout(function(){ sbtn.textContent='Sign & Proceed to Payment →'; sbtn.disabled=false; },3000);
+          });
+        }
+      }
+
+      /* Bind payment buttons - only qz-pay-btn and negotiate popup */
+      document.addEventListener('click', function(e) {
+        var el = e.target;
+        /* qz-pay-btn in results page */
+        if(el.id==='qz-pay-btn' || (el.closest && el.closest('#qz-pay-btn'))) {
+          e.preventDefault(); e.stopPropagation(); openSigModal(); return;
+        }
+        /* negotiate popup button */
+        var popup = el.closest && el.closest('#negotiate-popup');
+        if(popup && (el.tagName==='BUTTON' || (el.closest && el.closest('button')))) {
+          e.preventDefault(); e.stopPropagation(); openSigModal(); return;
         }
       }, true);
 
-      document.addEventListener('DOMContentLoaded', function() {
-        /* Close buttons */
-        var closeBtn = document.getElementById('sig-close-btn');
-        var cancelBtn = document.getElementById('sig-cancel-btn');
-        if(closeBtn) closeBtn.addEventListener('click', function(e) { e.stopPropagation(); closeSigModal(); });
-        if(cancelBtn) cancelBtn.addEventListener('click', function(e) { e.stopPropagation(); closeSigModal(); });
-
-        /* Click outside overlay to close */
-        var overlay = document.getElementById('sig-overlay');
-        if(overlay) overlay.addEventListener('click', function(e) {
-          if(e.target === overlay) closeSigModal();
-        });
-
-        /* Canvas mouse events */
-        var cv = document.getElementById('sig-canvas');
-        if(cv) {
-          cv.addEventListener('mousedown', function(e) {
-            e.preventDefault();
-            sigDrawing = true;
-            var p = sigGetPos(e);
-            sigCtx.beginPath();
-            sigCtx.moveTo(p.x, p.y);
-          });
-          cv.addEventListener('mousemove', function(e) {
-            e.preventDefault();
-            if(!sigDrawing) return;
-            var p = sigGetPos(e);
-            sigCtx.lineTo(p.x, p.y);
-            sigCtx.stroke();
-            sigHasSig = true;
-            var lbl = document.getElementById('sig-canvas-label');
-            if(lbl) lbl.style.opacity = '0';
-            sigCheckReady();
-          });
-          cv.addEventListener('mouseup', function(e) { e.preventDefault(); sigDrawing = false; });
-          cv.addEventListener('mouseleave', function(e) { sigDrawing = false; });
-
-          /* Touch events */
-          cv.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            sigDrawing = true;
-            var p = sigGetPos(e);
-            sigCtx.beginPath();
-            sigCtx.moveTo(p.x, p.y);
-          }, {passive: false});
-          cv.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-            if(!sigDrawing) return;
-            var p = sigGetPos(e);
-            sigCtx.lineTo(p.x, p.y);
-            sigCtx.stroke();
-            sigHasSig = true;
-            var lbl = document.getElementById('sig-canvas-label');
-            if(lbl) lbl.style.opacity = '0';
-            sigCheckReady();
-          }, {passive: false});
-          cv.addEventListener('touchend', function(e) { e.preventDefault(); sigDrawing = false; });
-        }
-
-        /* Clear button */
-        var clrBtn = document.getElementById('sig-clear-btn');
-        if(clrBtn) clrBtn.addEventListener('click', function() {
-          if(sigCtx) sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
-          sigHasSig = false;
-          var lbl = document.getElementById('sig-canvas-label');
-          if(lbl) lbl.style.opacity = '1';
-          sigCheckReady();
-        });
-
-        /* Name input */
-        var ni = document.getElementById('sig-name-input');
-        if(ni) ni.addEventListener('input', sigCheckReady);
-
-        /* Checkbox */
-        var chk = document.getElementById('sig-agree-chk');
-        if(chk) chk.addEventListener('change', sigCheckReady);
-
-        /* Sign & proceed to payment */
-        var sbtn = document.getElementById('sig-submit-btn');
-        if(sbtn) sbtn.addEventListener('click', function() {
-          sbtn.textContent = 'Redirecting...';
-          sbtn.disabled = true;
-          closeSigModal();
-          window.open('https://buy.stripe.com/YOUR_PAYMENT_LINK', '_blank');
-          setTimeout(function() {
-            sbtn.textContent = 'Sign & Proceed to Payment →';
-            sbtn.disabled = false;
-          }, 3000);
-        });
-      });
     })();
 
         /* nav shrink */
