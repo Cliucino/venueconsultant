@@ -668,12 +668,31 @@ window.QZ_VENUES = [{"id": 1, "n": "Casa Ricca Banquet Hall", "type": "Banquet H
   var EMAILJS_KEY = 'd5wpir0UQ8c90hc5O';
 
   function callSheet(params) {
-    fetch(SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(params)
-    }).catch(function(){});
+    if(params.type === 'questionnaire') {
+      /* Split into two requests to stay within URL limits */
+      /* Request 1: base info + venues 1-20 */
+      var p1 = {};
+      Object.keys(params).forEach(function(k){
+        var num = parseInt(k.replace('recommended_venue_',''));
+        if(k.indexOf('recommended_venue_') === -1 || num <= 20) p1[k] = params[k];
+      });
+      /* Request 2: row_id to match + venues 21-40 */
+      var p2 = {type:'questionnaire_venues', row_id: params.timestamp};
+      for(var i=21;i<=40;i++){
+        p2['recommended_venue_'+i] = params['recommended_venue_'+i] || '';
+      }
+      sendGet(p1);
+      setTimeout(function(){ sendGet(p2); }, 500);
+    } else {
+      sendGet(params);
+    }
+  }
+  function sendGet(params) {
+    var qs = Object.keys(params).map(function(k){
+      return encodeURIComponent(k) + '=' + encodeURIComponent(params[k] !== undefined ? params[k] : '');
+    }).join('&');
+    var img = new Image();
+    img.src = SHEET_URL + '?' + qs;
   }
   var registeredUser = {name:'',email:'',phone:''};
 
