@@ -1496,17 +1496,17 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
     Object.keys(params).forEach(function(k){
       parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]||''));
     });
-    /* Add a unique callback name to use JSONP and avoid CORB */
-    var cbName = '_sgcb' + Date.now() + Math.floor(Math.random()*9999);
-    parts.push('callback=' + cbName);
     url += parts.join('&');
+    /* Use script tag JSONP - works with Apps Script redirects */
+    var cbName = '_sgcb' + Date.now() + Math.floor(Math.random()*9999);
     window[cbName] = function(){ try{ delete window[cbName]; }catch(e){} };
     var s = document.createElement('script');
-    s.src = url;
-    s.onerror = function(){ try{ delete window[cbName]; }catch(e){} };
+    s.src = url + '&callback=' + cbName;
+    s.onerror = function(){ try{ delete window[cbName]; }catch(e){}; };
     document.head.appendChild(s);
-    /* Clean up after 10s */
-    setTimeout(function(){ try{ if(s.parentNode) s.parentNode.removeChild(s); delete window[cbName]; }catch(e){} }, 10000);
+    setTimeout(function(){
+      try{ if(s.parentNode) s.parentNode.removeChild(s); delete window[cbName]; }catch(e){}
+    }, 15000);
   }
 
   /* ── HELPER: bind button by ID ── */
