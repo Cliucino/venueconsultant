@@ -1797,48 +1797,12 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
     if(!name){ document.getElementById('reg-name').style.borderColor='rgba(200,80,80,.6)'; return; }
     if(!email.includes('@')){ document.getElementById('reg-email').style.borderColor='rgba(200,80,80,.6)'; return; }
     if(!phone){ document.getElementById('reg-phone').style.borderColor='rgba(200,80,80,.6)'; return; }
-
-    var regBtn = document.getElementById('reg-submit');
-    var msg = document.getElementById('reg-email-msg');
-    if(regBtn){ regBtn.textContent='Checking...'; regBtn.disabled=true; }
-
-    /* Check if email already registered */
-    var checkUrl = SHEET_URL + '?type=get_user&email=' + encodeURIComponent(email);
-    fetch(checkUrl)
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        if(data && !data.error) {
-          /* Email already registered -> redirect to login */
-          if(regBtn){ regBtn.textContent='Get Started →'; regBtn.disabled=false; }
-          if(msg){
-            msg.style.color='var(--gold)';
-            msg.textContent='This email is already registered. Please log in instead.';
-          }
-          /* Pre-fill login email and go to login page after short delay */
-          setTimeout(function(){
-            goto('login');
-            var loginEmail = document.getElementById('login-email');
-            if(loginEmail) loginEmail.value = email;
-            var loginMsg = document.getElementById('login-msg');
-            if(loginMsg){ loginMsg.style.color='var(--gold)'; loginMsg.textContent='Welcome back! Enter your email to receive a login code.'; }
-          }, 2000);
-          return;
-        }
-        /* New email - proceed with registration */
-        proceedWithRegistration(name, email, phone, regBtn, msg);
-      })
-      .catch(function(){
-        /* If check fails, proceed anyway */
-        proceedWithRegistration(name, email, phone, regBtn, msg);
-      });
-  }
-
-  function proceedWithRegistration(name, email, phone, regBtn, msg) {
     registeredUser = { name:name, email:email, phone:phone };
     try { sessionStorage.setItem('vc_user', JSON.stringify(registeredUser)); sessionStorage.setItem('vc_mid_quiz','1'); } catch(e) {}
+    var regBtn = document.getElementById('reg-submit');
     if(regBtn){ regBtn.textContent='Sending code...'; regBtn.disabled=true; }
     var code = Math.floor(100000+Math.random()*900000).toString();
-    /* Save registration to Sheet */
+    /* Save registration to Sheet immediately (don't wait for email) */
     sendGet({type:'registration',timestamp:new Date().toISOString(),name:name,email:email,phone:phone});
     window._regCode = code;
 
@@ -1846,11 +1810,14 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;display:flex;align-items:
     .then(function(){
       document.getElementById('reg-verify-wrap').style.display = 'flex';
       if(regBtn){ regBtn.textContent='Resend Code'; regBtn.disabled=false; }
+      var msg = document.getElementById('reg-email-msg');
       if(msg){ msg.style.color='var(--gold)'; msg.textContent='Code sent to '+email; }
     }).catch(function(){
+      /* Email failed but registration is already saved; still show verify box */
       document.getElementById('reg-verify-wrap').style.display = 'flex';
       if(regBtn){ regBtn.textContent='Resend Code'; regBtn.disabled=false; }
-      if(msg){ msg.style.color='rgba(200,80,80,.8)'; msg.textContent='Email delivery failed — please double-check your address. Your code is still active.'; }
+      var msg2 = document.getElementById('reg-email-msg');
+      if(msg2){ msg2.style.color='rgba(200,80,80,.8)'; msg2.textContent='Email delivery failed — please double-check your address. Your code is still active.'; }
     });
   }
 
